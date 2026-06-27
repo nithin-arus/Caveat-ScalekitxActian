@@ -30,6 +30,7 @@ export interface Analysis {
   riskScore: number; // 0-100
   flags: Flag[];
   createdAt: string;
+  tenantId?: string; // owning org in the B2B/multi-tenant deployment, e.g. "sf-tenants-union"
 }
 
 export interface AuditEntry {

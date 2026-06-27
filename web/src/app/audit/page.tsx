@@ -12,8 +12,10 @@ export default function AuditPage() {
       <div className="space-y-2">
         <h1 className="text-3xl font-semibold tracking-tight">Audit log</h1>
         <p className="text-ink-muted">
-          Every action Caveat takes on your behalf is attributed to you, the real human — not a
-          bot — and recorded here. Backed by Scalekit&apos;s 90-day audit trail on build day.
+          Every action Fineprint takes on a client&apos;s behalf is attributed to a named, SSO-verified
+          staffer — never a bot — and recorded here. Backed by Scalekit&apos;s 90-day audit trail on
+          build day, this is the chain of custody that lets a firm trust an AI agent acted within
+          scope.
         </p>
       </div>
 

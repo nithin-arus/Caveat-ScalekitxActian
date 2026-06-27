@@ -3,15 +3,15 @@ import Link from "next/link";
 const moments = [
   {
     title: "Scalekit",
-    body: "Acts as you, scoped, with a full audit trail — and can be revoked live.",
+    body: "Multi-tenant RBAC: case workers flag clauses, only SSO-verified attorneys can approve a send — every action attributed in a verifiable audit trail.",
   },
   {
     title: "Actian",
-    body: "Your contracts are embedded and searched locally. Pull the cable, retrieval still works.",
+    body: "Runs on-prem behind the clinic's firewall. Thousands of client leases cross-referenced against a toxicity database, zero PII touching the cloud.",
   },
   {
     title: "Render",
-    body: "Web, worker, vector DB, and a cron watcher — one blueprint, one private network.",
+    body: "Web, worker, vector DB, and a cron watcher — one blueprint, one private network, ready to scale across every clinic on the platform.",
   },
 ];
 
@@ -25,14 +25,16 @@ export default function Home() {
         </div>
         <div className="space-y-4">
           <p className="text-sm font-semibold uppercase tracking-widest text-seal">
-            The lawyer in your pocket
+            Systemic defense for tenant advocates
           </p>
           <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight max-w-3xl">
-            Caveat reads your contract, catches the traps, and writes your response.
+            Corporate landlords use software to exploit tenants. Fineprint is the enterprise
+            software Legal Aid uses to fight back.
           </h1>
           <p className="max-w-xl mx-auto text-lg text-ink-muted">
-            Every clause checked against market norms and your own history — without your
-            private documents ever leaving your control.
+            Every lease checked at scale against a citywide playbook of predatory clauses, with
+            role-gated attorney approval and a verifiable chain of custody — without client data
+            ever leaving your firewall.
           </p>
         </div>
         <div className="flex flex-col sm:flex-row gap-4">
@@ -40,7 +42,7 @@ export default function Home() {
             href="/connect"
             className="rounded-full bg-seal px-7 py-3 text-paper font-medium hover:bg-seal-dark transition-colors"
           >
-            Review a contract
+            Review a case
           </Link>
           <Link
             href="/watch"

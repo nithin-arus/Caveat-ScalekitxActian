@@ -4,11 +4,12 @@ import { useMemo, useState } from "react";
 import type { Analysis, Flag } from "@shared/contracts";
 import { RiskGauge } from "@/components/RiskGauge";
 import { severityColor } from "@/lib/data";
+import { useSession } from "@/lib/session";
 
-type Persona = "read_only" | "act";
-type SendState = "idle" | "sending" | "sent" | "blocked-readonly" | "blocked-revoked";
+type SendState = "idle" | "sending" | "sent" | "blocked-role" | "blocked-revoked";
 
 export function AnalysisView({ analysis }: { analysis: Analysis }) {
+  const { user, tenant } = useSession();
   const sortedFlags = useMemo(
     () =>
       [...analysis.flags].sort((a, b) => {
@@ -21,7 +22,6 @@ export function AnalysisView({ analysis }: { analysis: Analysis }) {
   const [selectedId, setSelectedId] = useState(sortedFlags[0]?.id);
   const selected: Flag | undefined = sortedFlags.find((f) => f.id === selectedId);
 
-  const [persona, setPersona] = useState<Persona>("read_only");
   const [revoked, setRevoked] = useState(false);
   const [sendState, setSendState] = useState<SendState>("idle");
   const [auditId, setAuditId] = useState<string | null>(null);
@@ -31,8 +31,8 @@ export function AnalysisView({ analysis }: { analysis: Analysis }) {
       setSendState("blocked-revoked");
       return;
     }
-    if (persona === "read_only") {
-      setSendState("blocked-readonly");
+    if (user.role !== "approver") {
+      setSendState("blocked-role");
       return;
     }
     setSendState("sending");
@@ -51,7 +51,9 @@ export function AnalysisView({ analysis }: { analysis: Analysis }) {
     <div className="mx-auto max-w-6xl w-full px-6 py-12 flex flex-col gap-10">
       <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-widest text-seal mb-1">Analysis</p>
+          <p className="text-sm font-semibold uppercase tracking-widest text-seal mb-1">
+            Analysis — {tenant.name}
+          </p>
           <h1 className="text-3xl font-semibold tracking-tight">{analysis.title}</h1>
           <p className="mt-2 max-w-2xl text-ink-muted">{analysis.summary}</p>
         </div>
@@ -119,23 +121,17 @@ export function AnalysisView({ analysis }: { analysis: Analysis }) {
 
               <div className="flex flex-col sm:flex-row sm:items-center gap-4 pt-2 border-t border-ink/10">
                 <div className="flex items-center gap-2 text-sm">
-                  <span className="text-ink-muted">Persona:</span>
-                  <div className="inline-flex rounded-full border border-ink/15 overflow-hidden">
-                    {(["read_only", "act"] as Persona[]).map((p) => (
-                      <button
-                        key={p}
-                        onClick={() => {
-                          setPersona(p);
-                          resetSendState();
-                        }}
-                        className={`px-3 py-1 text-xs font-medium ${
-                          persona === p ? "bg-seal text-paper" : "bg-transparent text-ink-muted"
-                        }`}
-                      >
-                        {p === "read_only" ? "Read-only" : "Act"}
-                      </button>
-                    ))}
-                  </div>
+                  <span className="text-ink-muted">Signed in as:</span>
+                  <span
+                    className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                      user.role === "approver" ? "bg-seal text-paper" : "bg-paper-muted text-ink"
+                    }`}
+                  >
+                    {user.name}
+                  </span>
+                  <span className="text-xs text-ink-muted">
+                    ({user.role === "approver" ? "Approver" : "Reviewer"} — switch in header)
+                  </span>
                 </div>
 
                 <label className="inline-flex items-center gap-2 text-sm text-ink-muted">
@@ -148,7 +144,7 @@ export function AnalysisView({ analysis }: { analysis: Analysis }) {
                     }}
                     className="accent-seal"
                   />
-                  Simulate revoked access
+                  Simulate Scalekit access revoked
                 </label>
 
                 <button
@@ -156,25 +152,25 @@ export function AnalysisView({ analysis }: { analysis: Analysis }) {
                   disabled={sendState === "sending"}
                   className="ml-auto rounded-full bg-seal text-paper px-5 py-2 text-sm font-medium hover:bg-seal-dark transition-colors disabled:opacity-60"
                 >
-                  {sendState === "sending" ? "Sending…" : "Approve & send as me"}
+                  {sendState === "sending" ? "Sending…" : "Approve & send"}
                 </button>
               </div>
 
               {sendState === "sent" && (
                 <p className="text-sm font-medium text-emerald-700">
-                  Sent. Audit ID <code className="font-mono">{auditId}</code> — attributed to the real
-                  user, not a bot.
+                  Sent. Audit ID <code className="font-mono">{auditId}</code> — chain of custody:
+                  approved by {user.name} on behalf of {tenant.name}.
                 </p>
               )}
-              {sendState === "blocked-readonly" && (
+              {sendState === "blocked-role" && (
                 <p className="text-sm font-medium text-amber-700">
-                  Blocked: this persona is read-only and cannot send. Switch to &ldquo;Act&rdquo; to
-                  approve.
+                  Requires Attorney approval. Case Workers can flag and draft, but only an
+                  SSO-verified Approver can send. Switch role in the header to demo.
                 </p>
               )}
               {sendState === "blocked-revoked" && (
                 <p className="text-sm font-medium text-red-700">
-                  Failed closed: access has been revoked. No action taken.
+                  Failed closed: Scalekit access has been revoked for this org. No action taken.
                 </p>
               )}
             </div>

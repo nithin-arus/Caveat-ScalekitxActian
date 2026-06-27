@@ -18,9 +18,10 @@ export default function WatchPage() {
       <div className="space-y-2">
         <h1 className="text-3xl font-semibold tracking-tight">Watch</h1>
         <p className="text-ink-muted">
-          A scheduled job scans your connected inbox every 30 minutes for new agreements and
-          chases anything awaiting signature. Running on a mock inbox scan now — same code path
-          the Render cron service runs on build day.
+          A scheduled job scans every connected client inbox every 30 minutes for new agreements
+          and chases anything awaiting signature — across every tenant org on the platform.
+          Running on a mock inbox scan now — same code path the Render cron service runs on build
+          day.
         </p>
       </div>
 

@@ -8,6 +8,7 @@ export const sampleAnalyses: Analysis[] = [
       "This lease has several landlord-favorable traps: deposit deductions for ordinary wear, rent and fee increases during the term, tenant responsibility for core repairs, unrestricted landlord entry, and a harsh early-termination penalty.",
     riskScore: 82,
     createdAt: "2026-06-26T16:30:00Z",
+    tenantId: "sf-tenants-union",
     flags: [
       {
         id: "sketchy-deposit-wear",
@@ -83,6 +84,7 @@ export const sampleAnalyses: Analysis[] = [
       "This is the high-drama demo lease. It combines a nonrefundable deposit, no rent relief during construction, unilateral relocation, essential-service disclaimers, one-way attorney fees, and mold/bedbug risk shifted to the tenant.",
     riskScore: 94,
     createdAt: "2026-06-26T17:10:00Z",
+    tenantId: "sf-tenants-union",
     flags: [
       {
         id: "gotcha-nonrefundable-deposit",
@@ -158,6 +160,7 @@ export const sampleAnalyses: Analysis[] = [
       "This lease mostly tracks tenant-friendly market terms: fixed rent, refundable deposit, reasonable late fee, repair duties preserved, 24-hour entry notice, and reasonable sublet language.",
     riskScore: 16,
     createdAt: "2026-06-26T15:45:00Z",
+    tenantId: "oakland-legal-aid",
     flags: [
       {
         id: "clean-sublet-standard",
@@ -179,7 +182,7 @@ export const sampleAnalyses: Analysis[] = [
           text: "Landlord may enter the premises with at least 24 hours' notice during reasonable hours for inspections, repairs, or showings, except in emergencies or as otherwise allowed by law.",
         },
         reason:
-          "This preserves reasonable notice and emergency access. It is the kind of clause Caveat should mark as acceptable rather than over-warning.",
+          "This preserves reasonable notice and emergency access. It is the kind of clause Fineprint should mark as acceptable rather than over-warning.",
         severity: "low",
         suggestedRedline: "No redline needed. Keep as written.",
       },
@@ -192,6 +195,7 @@ export const sampleAnalyses: Analysis[] = [
       "The salary is clear, but the equity economics are under-specified and several startup-specific terms need negotiation: no acceleration, a 30-day exercise window, broad IP assignment, outside-work approval, non-compete language, and no severance.",
     riskScore: 76,
     createdAt: "2026-06-26T17:00:00Z",
+    tenantId: "oakland-legal-aid",
     flags: [
       {
         id: "offer-exercise-window",
@@ -266,32 +270,32 @@ export const sampleAuditLog: AuditEntry[] = [
   {
     auditId: "audit-001",
     action: "fetchContract",
-    actor: "tejas@example.com",
-    detail: "Fetched '88 Mission Alley - Residential Lease' from Gmail using read-only scope (mock).",
+    actor: "Jordan — Case Worker (SF Tenants Union)",
+    detail: "Fetched '88 Mission Alley - Residential Lease' from intake queue using Reviewer scope (mock).",
     timestamp: "2026-06-26T16:30:00Z",
     ok: true,
   },
   {
     auditId: "audit-002",
     action: "sendRedline",
-    actor: "tejas@example.com",
-    detail: "Blocked send attempt: read-only persona cannot send the redline email.",
+    actor: "Jordan — Case Worker (SF Tenants Union)",
+    detail: "Blocked send attempt: Reviewer role cannot approve a redline. Requires Attorney approval.",
     timestamp: "2026-06-26T16:35:00Z",
     ok: false,
   },
   {
     auditId: "audit-003",
     action: "sendRedline",
-    actor: "tejas@example.com",
-    detail: "Sent redline for deposit, rent increase, maintenance, and entry clauses to leasing@mission-alley.example.",
+    actor: "Avery Chen — Lead Attorney (SF Tenants Union)",
+    detail: "Approved and sent redline for deposit, rent increase, maintenance, and entry clauses to leasing@mission-alley.example.",
     timestamp: "2026-06-26T16:37:00Z",
     ok: true,
   },
   {
     auditId: "audit-004",
     action: "revokeAccess",
-    actor: "tejas@example.com",
-    detail: "Gmail send scope revoked. Next external action failed closed while local analysis stayed available.",
+    actor: "Avery Chen — Lead Attorney (SF Tenants Union)",
+    detail: "Gmail send scope revoked via Scalekit. Next external action failed closed while local Actian analysis stayed available.",
     timestamp: "2026-06-26T16:39:00Z",
     ok: true,
   },
