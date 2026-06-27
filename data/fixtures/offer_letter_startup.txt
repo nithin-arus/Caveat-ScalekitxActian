@@ -1,0 +1,31 @@
+CAVEAT SAMPLE FIXTURE - STARTUP OFFER LETTER
+Use for demo/dev only. Not legal advice.
+
+Offer Letter
+
+1. Position
+You are offered the position of Founding Product Engineer, reporting to the CEO. Employment is at will and may be terminated by either you or the company at any time, with or without cause or notice.
+
+2. Compensation
+Your base salary will be $155,000 per year, paid according to the company's normal payroll schedule. Any bonus is fully discretionary and may be modified, reduced, or eliminated at any time.
+
+3. Equity
+Subject to board approval, you will receive an option to purchase 50,000 shares of common stock. Your option will vest over four years, with 25% vesting after one year of service and the remainder vesting monthly thereafter. No vesting acceleration will apply upon a change in control, termination, or any other event.
+
+4. Exercise Window
+Vested options must be exercised within 30 days after termination of employment.
+
+5. Intellectual Property
+Employee assigns to company all inventions, discoveries, works, ideas, code, designs, and intellectual property created before, during, or after employment that relate in any way to company business.
+
+6. Outside Activities
+Employee may not engage in outside employment, consulting, advisory work, open-source work, or business activity without company approval.
+
+7. Restrictive Covenants
+For 12 months after employment, employee may not work for, advise, invest in, or assist any business that competes with company.
+
+8. Severance
+You are not entitled to severance, continued benefits, acceleration, or other payments upon termination.
+
+9. Contingencies
+This offer is contingent on satisfactory completion of background checks, employment eligibility verification, and execution of company agreements.

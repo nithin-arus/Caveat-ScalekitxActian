@@ -1,0 +1,15 @@
+{
+  "generated_at": "2026-06-26T19:18:06.204Z",
+  "counts": {
+    "lease_playbook": 44,
+    "offer_letter_playbook": 15,
+    "fixture_clauses": 45,
+    "total_vectors": 104
+  },
+  "fixtures": {
+    "lease_clean": 12,
+    "lease_gotcha": 12,
+    "lease_sketchy": 12,
+    "offer_letter_startup": 9
+  }
+}

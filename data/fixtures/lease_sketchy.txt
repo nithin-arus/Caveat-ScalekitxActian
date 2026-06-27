@@ -1,0 +1,40 @@
+CAVEAT SAMPLE FIXTURE - SKETCHY LEASE
+Use for demo/dev only. Not legal advice.
+
+Residential Lease Agreement
+
+1. Parties and Premises
+Landlord leases to Tenant the apartment located at 88 Mission Alley, Unit 12, San Francisco, CA.
+
+2. Term
+The lease begins on July 1, 2026 and ends on June 30, 2027. This lease automatically renews for another 12 months unless Tenant gives written notice at least 120 days before expiration.
+
+3. Rent
+Tenant will pay monthly rent of $3,100 on the first day of each month. Landlord may increase rent, fees, utility charges, or other amounts at any time upon written notice.
+
+4. Security Deposit
+Tenant will pay a security deposit of $3,100. Security deposit will be returned after Landlord completes inspection and accounting. Landlord may retain all or part of the security deposit for cleaning, repainting, carpet wear, general wear and tear, administrative costs, or any other condition Landlord deems necessary.
+
+5. Late Fees
+If rent is late, Tenant will pay a late fee of $150 plus $25 per day until rent is paid in full.
+
+6. Repairs and Maintenance
+Tenant is responsible for all repairs, replacements, maintenance, pest control, appliance failures, plumbing issues, electrical issues, and habitability-related expenses during the lease term.
+
+7. Entry
+Landlord may enter the premises at any time for inspection, repairs, showings, maintenance, emergencies, or any business purpose.
+
+8. Utilities and Fees
+Tenant agrees to pay all utilities, shared charges, building charges, service fees, billing fees, and any other charges allocated by Landlord.
+
+9. Guests
+No guest may stay overnight without Landlord's prior written consent, and any unauthorized guest is a material breach.
+
+10. Early Termination
+If Tenant terminates early, Tenant remains liable for all rent through the end of the lease term, regardless of whether Landlord re-rents the premises.
+
+11. Liability
+Tenant shall indemnify Landlord from all claims, losses, damages, costs, and attorney fees arising from the premises, regardless of cause.
+
+12. Disputes
+Tenant waives the right to bring or participate in any class action and agrees all disputes must be resolved by binding arbitration selected by Landlord.

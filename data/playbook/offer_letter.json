@@ -1,0 +1,167 @@
+[
+  {
+    "id": "offer-vesting-one-year-cliff-standard",
+    "category": "equity_vesting",
+    "text": "Your option will vest over four years, with 25% vesting after one year of service and the remainder vesting monthly thereafter.",
+    "label": "standard",
+    "favors": "balanced",
+    "why": "Four-year vesting with a one-year cliff is common for startup employees.",
+    "market_standard": "Four-year vesting with a one-year cliff and monthly vesting after the cliff.",
+    "counter": "No change needed unless negotiating for acceleration or credit for prior service.",
+    "demo_hook": "Standard startup vesting."
+  },
+  {
+    "id": "offer-no-acceleration",
+    "category": "equity_vesting",
+    "text": "No vesting acceleration will apply upon a change in control, termination, or any other event.",
+    "label": "unusual",
+    "favors": "company",
+    "why": "No acceleration can leave the employee exposed if the company is sold or the role is eliminated.",
+    "market_standard": "Senior hires often ask for single-trigger or double-trigger acceleration, especially after an acquisition.",
+    "counter": "Add double-trigger acceleration for 50% to 100% of unvested equity if employment is terminated without cause or for good reason within 12 months after a change in control.",
+    "demo_hook": "No protection if the company sells."
+  },
+  {
+    "id": "offer-short-exercise-window",
+    "category": "equity_exercise",
+    "text": "Vested options must be exercised within 30 days after termination of employment.",
+    "label": "red-flag",
+    "favors": "company",
+    "why": "A short exercise window can force the employee to spend cash quickly or lose vested equity.",
+    "market_standard": "Many candidates negotiate an extended post-termination exercise window.",
+    "counter": "Extend the post-termination exercise window for vested options to at least 12 months, and preferably the full option term where permitted.",
+    "demo_hook": "You can lose vested equity after 30 days."
+  },
+  {
+    "id": "offer-broad-ip-assignment",
+    "category": "ip_assignment",
+    "text": "Employee assigns to company all inventions, discoveries, works, ideas, code, designs, and intellectual property created before, during, or after employment that relate in any way to company business.",
+    "label": "red-flag",
+    "favors": "company",
+    "why": "This can capture pre-existing side projects and future work outside the job.",
+    "market_standard": "IP assignment should be limited to work created during employment using company resources or related to assigned duties.",
+    "counter": "Limit assignment to IP created during employment that relates to company business or uses company resources, and list excluded prior inventions in an exhibit.",
+    "demo_hook": "Your side project may become theirs."
+  },
+  {
+    "id": "offer-noncompete-broad",
+    "category": "restrictive_covenants",
+    "text": "For 12 months after employment, employee may not work for, advise, invest in, or assist any business that competes with company.",
+    "label": "red-flag",
+    "favors": "company",
+    "why": "Broad non-competes can limit future employment and may be unenforceable or restricted in some states.",
+    "market_standard": "Restrictive covenants should be narrow, lawful, and focused on confidential information and non-solicitation where permitted.",
+    "counter": "Delete the non-compete. Replace with a confidentiality covenant and any lawful, narrowly tailored non-solicitation obligations.",
+    "demo_hook": "This can block your next job."
+  },
+  {
+    "id": "offer-at-will-standard",
+    "category": "employment_terms",
+    "text": "Employment is at will and may be terminated by either you or the company at any time, with or without cause or notice.",
+    "label": "standard",
+    "favors": "balanced",
+    "why": "At-will employment is standard in many US startup offer letters.",
+    "market_standard": "At-will language is common, though executives may negotiate severance or notice.",
+    "counter": "No change needed for most roles; senior candidates may ask for severance if terminated without cause.",
+    "demo_hook": "Standard at-will employment."
+  },
+  {
+    "id": "offer-severance-none",
+    "category": "severance",
+    "text": "You are not entitled to severance, continued benefits, acceleration, or other payments upon termination.",
+    "label": "unusual",
+    "favors": "company",
+    "why": "For senior or hard-to-replace roles, no severance may be worth negotiating.",
+    "market_standard": "Senior hires often ask for 1-3 months of severance and benefits continuation for termination without cause.",
+    "counter": "Add severance equal to 8 weeks of base salary and benefits continuation if terminated without cause, subject to a standard release.",
+    "demo_hook": "No cushion if terminated."
+  },
+  {
+    "id": "offer-bonus-discretionary-only",
+    "category": "compensation",
+    "text": "Any bonus is fully discretionary and may be modified, reduced, or eliminated at any time.",
+    "label": "unusual",
+    "favors": "company",
+    "why": "A discretionary-only bonus may not be meaningful if it was part of the compensation pitch.",
+    "market_standard": "Target bonuses should identify target amount, criteria, and eligibility timing.",
+    "counter": "State the target bonus amount, eligibility period, payment timing, and any objective performance criteria.",
+    "demo_hook": "The bonus may be imaginary."
+  },
+  {
+    "id": "offer-relocation-repay",
+    "category": "relocation",
+    "text": "If you leave or are terminated for any reason within 24 months, you must repay all relocation expenses and signing bonus amounts.",
+    "label": "red-flag",
+    "favors": "company",
+    "why": "Repayment after involuntary termination is harsh and 24 months can be long.",
+    "market_standard": "Repayment obligations are usually prorated and often excluded for termination without cause.",
+    "counter": "Repayment should be prorated monthly and waived if employment ends due to termination without cause, layoff, disability, death, or company breach.",
+    "demo_hook": "You owe money if they lay you off."
+  },
+  {
+    "id": "offer-confidentiality-no-public-info-carveout",
+    "category": "confidentiality",
+    "text": "Employee must keep confidential all information learned during employment, whether or not public, known, or independently developed.",
+    "label": "red-flag",
+    "favors": "company",
+    "why": "Confidentiality should not cover public information or knowledge independently developed outside the company.",
+    "market_standard": "Confidentiality obligations include standard carveouts for public information, prior knowledge, and independent development.",
+    "counter": "Add carveouts for information that is public, already known without duty of confidentiality, independently developed, or lawfully received from another source.",
+    "demo_hook": "Confidentiality covers even public info."
+  },
+  {
+    "id": "offer-moonlighting-ban",
+    "category": "outside_activities",
+    "text": "Employee may not engage in outside employment, consulting, advisory work, open-source work, or business activity without company approval.",
+    "label": "unusual",
+    "favors": "company",
+    "why": "This can block harmless side projects, advising, or open-source contributions.",
+    "market_standard": "Outside activity limits should focus on conflicts of interest, use of company resources, and interference with job duties.",
+    "counter": "Permit outside activities that do not compete with company, use company confidential information or resources, or interfere with job duties.",
+    "demo_hook": "Open-source work needs approval."
+  },
+  {
+    "id": "offer-board-approval-equity",
+    "category": "equity_grant",
+    "text": "The equity grant is subject to approval by the board of directors and the terms of the company's equity plan.",
+    "label": "standard",
+    "favors": "company",
+    "why": "Board approval is common, but candidates should ask for the grant size and plan documents.",
+    "market_standard": "Offer letters should state the number of shares or options, exercise price methodology, vesting, and approval process.",
+    "counter": "Confirm the number of shares/options, fully diluted ownership percentage, vesting schedule, exercise price methodology, and plan documents.",
+    "demo_hook": "Equity still needs board approval."
+  },
+  {
+    "id": "offer-no-ownership-percentage",
+    "category": "equity_grant",
+    "text": "You will receive an option to purchase 50,000 shares of common stock.",
+    "label": "unusual",
+    "favors": "company",
+    "why": "Share count alone does not tell the candidate ownership percentage or dilution context.",
+    "market_standard": "Candidates should understand the fully diluted percentage and latest valuation context.",
+    "counter": "Provide the approximate fully diluted ownership percentage represented by the grant and current total shares outstanding.",
+    "demo_hook": "50,000 shares may be tiny."
+  },
+  {
+    "id": "offer-one-sided-assignment-arbitration",
+    "category": "dispute_resolution",
+    "text": "Employee agrees to binding arbitration for all employment-related claims and waives class, collective, and representative actions.",
+    "label": "unusual",
+    "favors": "company",
+    "why": "Arbitration and class waivers can limit procedural rights and shared claims.",
+    "market_standard": "Dispute terms should comply with applicable law and preserve non-waivable rights.",
+    "counter": "Confirm the clause preserves all non-waivable rights and uses a neutral arbitration provider with company-paid fees where required.",
+    "demo_hook": "You waive class claims."
+  },
+  {
+    "id": "offer-start-date-contingencies",
+    "category": "employment_terms",
+    "text": "This offer is contingent on satisfactory completion of background checks, employment eligibility verification, and execution of company agreements.",
+    "label": "standard",
+    "favors": "balanced",
+    "why": "Contingencies are common, but candidates should review all required agreements before resigning from a current job.",
+    "market_standard": "Contingencies should be clear and all required agreements should be provided before acceptance.",
+    "counter": "Ask for all required agreements and policies before accepting and before resigning from any current role.",
+    "demo_hook": "Read the hidden agreements first."
+  }
+]

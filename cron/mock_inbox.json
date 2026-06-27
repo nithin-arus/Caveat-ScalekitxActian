@@ -1,0 +1,26 @@
+[
+  {
+    "id": "gmail-mock-lease-sketchy",
+    "subject": "Lease agreement ready for review",
+    "from": "leasing@mission-alley.example",
+    "received_at": "2026-06-26T16:30:00.000Z",
+    "fixture": "../data/fixtures/lease_sketchy.txt",
+    "status": "new"
+  },
+  {
+    "id": "gmail-mock-offer-letter",
+    "subject": "Founding Product Engineer offer letter",
+    "from": "founders@seedstage.example",
+    "received_at": "2026-06-26T17:00:00.000Z",
+    "fixture": "../data/fixtures/offer_letter_startup.txt",
+    "status": "new"
+  },
+  {
+    "id": "gmail-mock-utility-bill",
+    "subject": "Your utility bill is available",
+    "from": "billing@utility.example",
+    "received_at": "2026-06-26T18:00:00.000Z",
+    "fixture": null,
+    "status": "ignored"
+  }
+]

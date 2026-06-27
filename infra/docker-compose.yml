@@ -1,0 +1,30 @@
+services:
+  caveat-actian:
+    image: ${ACTIAN_IMAGE:-ACTIAN_IMAGE_TODO}
+    container_name: caveat-actian
+    profiles: ["actian"]
+    environment:
+      ACTIAN_DATABASE: ${ACTIAN_DATABASE:-caveat}
+      ACTIAN_USER: ${ACTIAN_USER:-caveat}
+      ACTIAN_PASSWORD: ${ACTIAN_PASSWORD:-caveat_dev_password}
+    ports:
+      - "${ACTIAN_PORT:-5432}:5432"
+    volumes:
+      - caveat-actian-data:/var/lib/actian
+    healthcheck:
+      test: ["CMD-SHELL", "echo 'replace with Actian healthcheck once image is confirmed'"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  caveat-redis:
+    image: redis:7-alpine
+    container_name: caveat-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - caveat-redis-data:/data
+
+volumes:
+  caveat-actian-data:
+  caveat-redis-data:

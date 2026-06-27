@@ -1,0 +1,8 @@
+{
+  "name": "@caveat/cron",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "watch": "node --experimental-strip-types watch.ts"
+  }
+}
