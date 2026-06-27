@@ -1,0 +1,14 @@
+{
+  "name": "caveat-scalekit-actian-root",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "web",
+    "worker",
+    "cron"
+  ],
+  "scripts": {
+    "build": "npm run build --workspace=web",
+    "start": "npm run start --workspace=web"
+  }
+}
