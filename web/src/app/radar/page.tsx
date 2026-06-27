@@ -64,26 +64,35 @@ export default async function RadarPage() {
   const heat = [18, 31, 9, 24, 42, 17, 36, 22, 11, 29, 47, 15, 33, 20, 27, 39];
 
   return (
-    <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-6 py-12">
-      <div className="grid gap-6 lg:grid-cols-[1fr_380px] lg:items-end">
-        <div className="space-y-2">
-          <p className="text-sm font-semibold uppercase tracking-widest text-seal">Actian VectorAI radar</p>
-          <h1 className="text-3xl font-semibold tracking-tight">{profile.title}</h1>
-          <p className="max-w-2xl text-ink-muted">
+    <div style={{ maxWidth: 1340, margin: "0 auto", padding: "34px 40px 80px", display: "flex", flexDirection: "column", gap: 32 }}>
+      {/* Header Section */}
+      <div style={{ display: "grid", gap: 24, gridTemplateColumns: "1fr 380px", alignItems: "end", paddingBottom: 24, borderBottom: "1px solid #DCD7CB" }} className="case-grid">
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          <p style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 10, letterSpacing: "0.2em", color: "#7A1F2B", textTransform: "uppercase", margin: 0 }}>
+            Actian VectorAI radar
+          </p>
+          <h1 style={{ fontFamily: "'Newsreader',Georgia,serif", fontWeight: 500, fontSize: 40, letterSpacing: "-0.015em", margin: "0 0 8px", color: "#17150F" }}>
+            {profile.title}
+          </h1>
+          <p style={{ margin: 0, fontSize: 14, color: "#5C574C", maxWidth: 640, lineHeight: 1.55 }}>
             Tenant-scoped semantic matches from {session.tenant.name}&apos;s local corpus. This view
             is designed to make the Actian integration feel deep: every pattern is tied to a local
             collection, an approval queue, and a reusable redline.
           </p>
         </div>
-        <div className="rounded-lg border border-ink/10 bg-paper p-5">
-          <p className="text-xs font-semibold uppercase tracking-widest text-ink-muted">Active collection</p>
-          <p className="mt-2 font-mono text-sm text-seal">{profile.collection}</p>
-          <p className="mt-3 text-sm text-ink-muted">{profile.scope}</p>
+        <div style={{ border: "1px solid #DCD7CB", background: "#FBFAF6", padding: 20, borderRadius: 2 }}>
+          <p style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 9.5, letterSpacing: "0.15em", color: "#9A9384", textTransform: "uppercase", margin: "0 0 8px" }}>
+            Active collection
+          </p>
+          <p style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 12, color: "#7A1F2B", margin: "0 0 10px", wordBreak: "break-all" }}>
+            {profile.collection}
+          </p>
+          <p style={{ margin: 0, fontSize: 13, color: "#5C574C" }}>{profile.scope}</p>
         </div>
       </div>
 
       {!canView && (
-        <div className="rounded-lg border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-900">
+        <div style={{ padding: "16px 20px", background: "#FDF9F2", border: "1px solid #E8D9BD", color: "#8B651B", fontSize: 13.5, borderRadius: 2, lineHeight: 1.5 }}>
           Radar requires Supervisor access. Open the SSO switcher and choose Priya Shah to unlock
           macro-pattern analysis.
         </div>
@@ -91,78 +100,112 @@ export default async function RadarPage() {
 
       {canView && (
         <>
-          <div className="grid gap-4 md:grid-cols-4">
+          {/* Metrics Grid */}
+          <div style={{ display: "grid", gap: 20, gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}>
             {[
               ["Similar clauses", total],
               ["High-risk findings", highRisk],
               ["Average case risk", avgRisk],
               ["Queued approvals", cases.filter((item) => item.status === "awaiting_approval").length],
             ].map(([label, value]) => (
-              <div key={label} className="rounded-lg border border-ink/10 bg-paper p-5">
-                <p className="text-xs font-semibold uppercase tracking-widest text-ink-muted">{label}</p>
-                <p className="mt-2 text-3xl font-semibold">{value}</p>
+              <div key={label as string} style={{ border: "1px solid #DCD7CB", background: "#FBFAF6", padding: 20, borderRadius: 2 }}>
+                <p style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 9.5, letterSpacing: "0.15em", color: "#9A9384", textTransform: "uppercase", margin: "0 0 6px" }}>
+                  {label}
+                </p>
+                <p style={{ fontFamily: "'Newsreader',Georgia,serif", fontSize: 36, fontWeight: 500, margin: 0, color: "#17150F" }}>
+                  {value}
+                </p>
               </div>
             ))}
           </div>
 
-          <div className="grid gap-6 lg:grid-cols-[1fr_340px]">
-            <div className="rounded-lg border border-ink/10 bg-paper p-5">
-              <div className="mb-4 flex items-center justify-between">
+          <div style={{ display: "grid", gap: 24, gridTemplateColumns: "1fr 340px" }} className="case-grid">
+            {/* Left Column: Recurring Patterns */}
+            <div style={{ border: "1px solid #DCD7CB", background: "#FBFAF6", padding: 24, borderRadius: 2 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 20, borderBottom: "1px solid #E4DFD3", paddingBottom: 16 }}>
                 <div>
-                  <h2 className="font-semibold">Recurring toxicity patterns</h2>
-                  <p className="text-sm text-ink-muted">{profile.corpus}</p>
+                  <h2 style={{ fontFamily: "'Newsreader',Georgia,serif", fontSize: 22, fontWeight: 500, margin: "0 0 4px", color: "#17150F" }}>
+                    Recurring toxicity patterns
+                  </h2>
+                  <p style={{ margin: 0, fontSize: 13, color: "#9A9384", fontFamily: "'IBM Plex Mono',monospace" }}>{profile.corpus}</p>
                 </div>
-                <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
+                <span style={{
+                  fontFamily: "'IBM Plex Mono',monospace",
+                  fontSize: 9,
+                  letterSpacing: "0.1em",
+                  textTransform: "uppercase",
+                  color: "#2E6B3E",
+                  background: "#E8F5E9",
+                  padding: "4px 8px",
+                  borderRadius: 2
+                }}>
                   local query
                 </span>
               </div>
-              <div className="grid gap-3">
+              
+              <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
                 {patterns.map((pattern) => (
-                  <div key={pattern.id} className="grid gap-2 rounded-md bg-paper-muted/50 p-4">
-                    <div className="flex items-start justify-between gap-4">
+                  <div key={pattern.id} style={{ border: "1px solid #E4DFD3", background: "#FBFAF6", padding: 16, borderRadius: 2 }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16, marginBottom: 8 }}>
                       <div>
-                        <p className="font-medium">{pattern.clause}</p>
-                        <p className="text-sm text-ink-muted">
+                        <p style={{ fontSize: 15, fontWeight: 600, color: "#17150F", margin: "0 0 4px" }}>{pattern.clause}</p>
+                        <p style={{ margin: 0, fontSize: 12, color: "#79746A" }}>
                           {pattern.neighborhood} · {pattern.landlord} · {pattern.caseTitle}
                         </p>
                       </div>
-                      <span className="text-sm font-semibold text-seal">{pattern.count} hits</span>
+                      <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 12, fontWeight: 600, color: "#7A1F2B" }}>{pattern.count} hits</span>
                     </div>
-                    <div className="h-2 overflow-hidden rounded-full bg-paper">
-                      <div className="h-full bg-seal" style={{ width: `${pattern.match}%` }} />
+                    
+                    {/* Progress Bar */}
+                    <div style={{ height: 6, background: "#E4DFD3", borderRadius: 3, overflow: "hidden", margin: "10px 0" }}>
+                      <div style={{ height: "100%", background: "#7A1F2B", width: `${pattern.match}%`, borderRadius: 3 }} />
                     </div>
-                    <div className="flex justify-between text-xs text-ink-muted">
-                      <span>{pattern.match}% semantic match from {pattern.sourceClause}</span>
-                      <span>{pattern.severity}</span>
+                    
+                    <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11, fontFamily: "'IBM Plex Mono',monospace", color: "#9A9384" }}>
+                      <span>{pattern.match}% match from {pattern.sourceClause}</span>
+                      <span style={{
+                        textTransform: "uppercase",
+                        color: pattern.severity === "high" ? "#B23B2A" : "#B07D2A",
+                        fontWeight: 600
+                      }}>{pattern.severity} severity</span>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
 
-            <aside className="flex flex-col gap-5">
-              <div className="rounded-lg border border-ink/10 bg-paper p-5">
-                <h2 className="font-semibold">Bad actor leaderboard</h2>
-                <div className="mt-4 space-y-3">
+            {/* Right Column: Sidebar */}
+            <aside style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+              {/* Leaderboard Card */}
+              <div style={{ border: "1px solid #DCD7CB", background: "#FBFAF6", padding: 20, borderRadius: 2 }}>
+                <h2 style={{ fontFamily: "'Newsreader',Georgia,serif", fontSize: 18, fontWeight: 500, margin: "0 0 12px", borderBottom: "1px solid #E4DFD3", paddingBottom: 10, color: "#17150F" }}>
+                  Bad actor leaderboard
+                </h2>
+                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                   {profile.landlords.map((landlord, index) => (
-                    <div key={landlord} className="flex items-center justify-between text-sm">
-                      <span>{landlord}</span>
-                      <span className="font-mono text-seal">{48 - index * 9}</span>
+                    <div key={landlord} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 13 }}>
+                      <span style={{ color: "#17150F" }}>{landlord}</span>
+                      <span style={{ fontFamily: "'IBM Plex Mono',monospace", color: "#7A1F2B", fontWeight: 600 }}>{48 - index * 9}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
-              <div className="rounded-lg border border-ink/10 bg-paper p-5">
-                <h2 className="font-semibold">Hotspot heat</h2>
-                <p className="mt-1 text-sm text-ink-muted">{profile.hotspot}</p>
-                <div className="mt-4 grid grid-cols-4 gap-2">
+              {/* Hotspot Card */}
+              <div style={{ border: "1px solid #DCD7CB", background: "#FBFAF6", padding: 20, borderRadius: 2 }}>
+                <h2 style={{ fontFamily: "'Newsreader',Georgia,serif", fontSize: 18, fontWeight: 500, margin: "0 0 2px", color: "#17150F" }}>
+                  Hotspot heat
+                </h2>
+                <p style={{ margin: "0 0 12px", fontSize: 11, fontFamily: "'IBM Plex Mono',monospace", color: "#9A9384" }}>{profile.hotspot}</p>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8 }}>
                   {heat.map((value, index) => (
                     <div
                       key={index}
-                      className="aspect-square rounded"
                       style={{
+                        aspectRatio: "1/1",
+                        borderRadius: 1,
                         background: `rgba(122, 31, 43, ${0.14 + value / 80})`,
+                        border: "1px solid rgba(122, 31, 43, 0.05)"
                       }}
                       title={`${value} matches`}
                     />
@@ -170,10 +213,13 @@ export default async function RadarPage() {
                 </div>
               </div>
 
-              <div className="rounded-lg border border-ink/10 bg-paper p-5">
-                <h2 className="font-semibold">Demo feature</h2>
-                <p className="mt-2 text-sm text-ink-muted">{profile.feature}</p>
-                <div className="mt-4 rounded-md bg-paper-muted p-4 text-sm">
+              {/* Demo Feature Card */}
+              <div style={{ border: "1px solid #DCD7CB", background: "#FBFAF6", padding: 20, borderRadius: 2 }}>
+                <h2 style={{ fontFamily: "'Newsreader',Georgia,serif", fontSize: 18, fontWeight: 500, margin: "0 0 10px", borderBottom: "1px solid #E4DFD3", paddingBottom: 10, color: "#17150F" }}>
+                  Demo feature
+                </h2>
+                <p style={{ margin: "0 0 8px", fontSize: 11, fontFamily: "'IBM Plex Mono',monospace", color: "#9A9384", textTransform: "uppercase" }}>{profile.feature}</p>
+                <div style={{ fontSize: 12.5, color: "#5C574C", lineHeight: 1.5, background: "#FBFAF6", borderLeft: "3px solid #7A1F2B", padding: "12px 16px" }}>
                   Actian retrieval links one clause to prior tenant history, the playbook counter,
                   and the approval packet without crossing tenant boundaries.
                 </div>
@@ -181,24 +227,41 @@ export default async function RadarPage() {
             </aside>
           </div>
 
-          <div className="rounded-lg border border-ink/10 bg-paper p-5">
-            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          {/* Redlines Container */}
+          <div style={{ border: "1px solid #DCD7CB", background: "#FBFAF6", padding: 24, borderRadius: 2 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #E4DFD3", paddingBottom: 16, marginBottom: 20, flexWrap: "wrap", gap: 16 }}>
               <div>
-                <h2 className="font-semibold">Approval-ready redlines</h2>
-                <p className="text-sm text-ink-muted">
+                <h2 style={{ fontFamily: "'Newsreader',Georgia,serif", fontSize: 20, fontWeight: 500, margin: "0 0 4px", color: "#17150F" }}>
+                  Approval-ready redlines
+                </h2>
+                <p style={{ margin: 0, fontSize: 13.5, color: "#5C574C" }}>
                   Top pattern counters can be pushed into the attorney queue and sent via scoped
                   Scalekit Gmail action.
                 </p>
               </div>
-              <a href="/approvals" className="rounded bg-ink px-4 py-2 text-sm font-semibold text-paper">
+              <a
+                href="/approvals"
+                style={{
+                  display: "inline-block",
+                  padding: "11px 18px",
+                  background: "#17150F",
+                  color: "#FBFAF6",
+                  border: "none",
+                  borderRadius: 3,
+                  fontSize: 12.5,
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  textDecoration: "none"
+                }}
+              >
                 Open approvals
               </a>
             </div>
-            <div className="mt-4 grid gap-3 lg:grid-cols-3">
+            <div style={{ display: "grid", gap: 16, gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}>
               {patterns.slice(0, 3).map((pattern) => (
-                <div key={pattern.id} className="rounded-md bg-paper-muted/70 p-4">
-                  <p className="font-medium">{pattern.clause}</p>
-                  <p className="mt-2 text-sm text-ink-muted">{pattern.redline}</p>
+                <div key={pattern.id} style={{ border: "1px solid #E4DFD3", background: "#F9F6E7", padding: 16, borderRadius: 2 }}>
+                  <p style={{ fontSize: 14, fontWeight: 600, color: "#17150F", margin: "0 0 8px" }}>{pattern.clause}</p>
+                  <p style={{ margin: 0, fontSize: 13, color: "#5C574C", fontStyle: "italic", borderLeft: "2px solid #7A1F2B", paddingLeft: 12 }}>{pattern.redline}</p>
                 </div>
               ))}
             </div>

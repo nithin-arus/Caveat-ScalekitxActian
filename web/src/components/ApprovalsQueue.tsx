@@ -49,16 +49,16 @@ export function ApprovalsQueue({ initialCases, session, canApprove }: Props) {
   }
 
   return (
-    <div className="grid gap-5">
+    <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
       {!canApprove && (
-        <div className="rounded-lg border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-900">
+        <div style={{ padding: "16px 20px", background: "#FDF9F2", border: "1px solid #E8D9BD", color: "#8B651B", fontSize: 13.5, borderRadius: 2, lineHeight: 1.5 }}>
           Read-only reviewer scope is active. The queue is visible in demo mode, but send actions fail
           closed until you switch to an Approver or Supervisor identity.
         </div>
       )}
 
       {cases.length === 0 && (
-        <div className="rounded-lg border border-ink/10 bg-paper-muted/50 px-5 py-8 text-center text-ink-muted">
+        <div style={{ border: "1px solid #DCD7CB", background: "#F3F1EB", padding: "40px 20px", textAlign: "center", color: "#9A9384", borderRadius: 2, fontSize: 14 }}>
           No cases are waiting for approval in {session.tenant.name}.
         </div>
       )}
@@ -69,83 +69,165 @@ export function ApprovalsQueue({ initialCases, session, canApprove }: Props) {
         const med = severityCount(item, "med");
 
         return (
-          <article key={item.id} className="rounded-lg border border-ink/10 bg-paper p-5 shadow-sm">
-            <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
-              <div className="space-y-3">
+          <article
+            key={item.id}
+            style={{
+              border: "1px solid #DCD7CB",
+              background: "#FBFAF6",
+              padding: 24,
+              borderRadius: 2,
+              display: "flex",
+              flexDirection: "column",
+              gap: 24
+            }}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 24, flexWrap: "wrap" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: 12, flex: 1 }}>
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-widest text-seal">
+                  <p style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 9.5, letterSpacing: "0.15em", color: "#7A1F2B", textTransform: "uppercase", margin: "0 0 4px" }}>
                     {item.tenantId} · Awaiting approval
                   </p>
-                  <h2 className="mt-1 text-2xl font-semibold tracking-tight">{item.title}</h2>
+                  <h2 style={{ fontFamily: "'Newsreader',Georgia,serif", fontSize: 24, fontWeight: 500, margin: 0, color: "#17150F" }}>
+                    {item.title}
+                  </h2>
                 </div>
-                <p className="max-w-3xl text-sm leading-6 text-ink-muted">{item.summary}</p>
-                <div className="flex flex-wrap gap-2 text-xs">
-                  <span className="rounded-full bg-red-50 px-3 py-1 font-semibold text-red-700">
-                    {high} high-risk clauses
+                <p style={{ margin: 0, fontSize: 13.5, color: "#5C574C", lineHeight: 1.55, maxWidth: 680 }}>
+                  {item.summary}
+                </p>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 4 }}>
+                  <span style={{
+                    fontFamily: "'IBM Plex Mono',monospace",
+                    fontSize: 9.5,
+                    letterSpacing: "0.05em",
+                    color: "#A82F24",
+                    background: "#FDF5F5",
+                    border: "1px solid #EFA7A0",
+                    padding: "3px 8px",
+                    borderRadius: 2
+                  }}>
+                    {high} high-risk
                   </span>
-                  <span className="rounded-full bg-amber-50 px-3 py-1 font-semibold text-amber-700">
-                    {med} medium-risk clauses
+                  <span style={{
+                    fontFamily: "'IBM Plex Mono',monospace",
+                    fontSize: 9.5,
+                    letterSpacing: "0.05em",
+                    color: "#8B651B",
+                    background: "#FDF9F2",
+                    border: "1px solid #E8D9BD",
+                    padding: "3px 8px",
+                    borderRadius: 2
+                  }}>
+                    {med} med-risk
                   </span>
-                  <span className="rounded-full bg-paper-muted px-3 py-1 font-semibold text-ink-muted">
-                    Risk score {item.riskScore}
+                  <span style={{
+                    fontFamily: "'IBM Plex Mono',monospace",
+                    fontSize: 9.5,
+                    letterSpacing: "0.05em",
+                    color: "#5C574C",
+                    background: "#F3F1EB",
+                    border: "1px solid #DCD7CB",
+                    padding: "3px 8px",
+                    borderRadius: 2
+                  }}>
+                    Score {item.riskScore}
                   </span>
-                  <span className="rounded-full bg-emerald-50 px-3 py-1 font-semibold text-emerald-700">
-                    Actian matches attached
+                  <span style={{
+                    fontFamily: "'IBM Plex Mono',monospace",
+                    fontSize: 9.5,
+                    letterSpacing: "0.05em",
+                    color: "#2E6B3E",
+                    background: "#E8F5E9",
+                    border: "1px solid #A3D9B1",
+                    padding: "3px 8px",
+                    borderRadius: 2
+                  }}>
+                    Actian matches
                   </span>
                 </div>
               </div>
 
-              <div className="min-w-64 rounded-md border border-ink/10 bg-paper-muted/60 p-4">
-                <p className="text-xs font-semibold uppercase tracking-widest text-ink-muted">Scoped action</p>
-                <p className="mt-2 text-sm">
-                  Actor: <span className="font-semibold">{session.name}</span>
+              <div style={{ border: "1px solid #DCD7CB", background: "#F3F1EB", padding: 16, borderRadius: 2, minWidth: 260 }}>
+                <p style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 9.5, letterSpacing: "0.15em", color: "#9A9384", textTransform: "uppercase", margin: "0 0 10px", borderBottom: "1px solid #DCD7CB", paddingBottom: 6 }}>
+                  Scoped action
                 </p>
-                <p className="text-sm">
+                <p style={{ margin: "0 0 4px", fontSize: 13, color: "#17150F" }}>
+                  Actor: <span style={{ fontWeight: 600 }}>{session.name}</span>
+                </p>
+                <p style={{ margin: "0 0 12px", fontSize: 13, color: "#17150F" }}>
                   Scope:{" "}
-                  <span className={canApprove ? "font-semibold text-emerald-700" : "font-semibold text-amber-700"}>
+                  <span style={{
+                    fontFamily: "'IBM Plex Mono',monospace",
+                    fontWeight: 600,
+                    color: canApprove ? "#2E6B3E" : "#8B651B"
+                  }}>
                     {canApprove ? "act:redline" : "read-only"}
                   </span>
                 </p>
                 <button
                   type="button"
                   onClick={() => sendRedline(item.id)}
-                  disabled={state.status === "sending"}
-                  className="mt-4 w-full rounded bg-ink px-4 py-2 text-sm font-semibold text-paper transition-colors hover:bg-seal disabled:cursor-wait disabled:opacity-60"
+                  disabled={state.status === "sending" || state.status === "sent" || !canApprove}
+                  style={{
+                    width: "100%",
+                    padding: "9px 12px",
+                    background: state.status === "sent" ? "#2E6B3E" : (state.status === "sending" ? "#9A9384" : "#17150F"),
+                    color: "#FBFAF6",
+                    border: "none",
+                    borderRadius: 2,
+                    fontSize: 12.5,
+                    fontWeight: 600,
+                    cursor: (state.status === "sending" || state.status === "sent" || !canApprove) ? "not-allowed" : "pointer",
+                    opacity: (!canApprove && state.status !== "sent") ? 0.5 : 1
+                  }}
                 >
-                  {state.status === "sending" ? "Sending..." : "Approve and Send"}
+                  {state.status === "sending" ? "Sending..." : (state.status === "sent" ? "Sent ✓" : "Approve and Send")}
                 </button>
+                
                 {state.message && (
                   <p
-                    className={`mt-3 text-sm ${
-                      state.status === "blocked"
-                        ? "text-red-700"
-                        : state.status === "sent"
-                          ? "text-emerald-700"
-                          : "text-ink-muted"
-                    }`}
+                    style={{
+                      margin: "10px 0 0",
+                      fontSize: 12.5,
+                      fontWeight: 500,
+                      color: state.status === "blocked" ? "#A82F24" : (state.status === "sent" ? "#2E6B3E" : "#5C574C")
+                    }}
                   >
                     {state.message}
                   </p>
                 )}
+                
                 {state.audit && (
-                  <p className="mt-2 break-all font-mono text-[11px] text-ink-muted">
-                    {state.audit.auditId} · {state.audit.signature}
-                  </p>
+                  <div style={{ marginTop: 8, paddingTop: 8, borderTop: "1px dashed #DCD7CB", fontFamily: "'IBM Plex Mono',monospace", fontSize: 9.5, color: "#9A9384", wordBreak: "break-all" }}>
+                    <div>ID: {state.audit.auditId}</div>
+                    <div style={{ marginTop: 2 }}>SIG: {state.audit.signature}</div>
+                  </div>
                 )}
               </div>
             </div>
 
-            <div className="mt-5 grid gap-3 lg:grid-cols-2">
+            <div style={{ display: "grid", gap: 16, gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", marginTop: 8 }}>
               {item.flags.slice(0, 4).map((flag) => (
-                <div key={flag.id} className="rounded-md border border-ink/10 bg-background/60 p-4">
-                  <div className="flex items-start justify-between gap-3">
-                    <p className="font-medium">{flag.clause.section}</p>
-                    <span className="rounded-full bg-red-50 px-2 py-1 text-[11px] font-semibold uppercase tracking-wide text-red-700">
+                <div key={flag.id} style={{ border: "1px solid #E4DFD3", background: "#F3F1EB", padding: 16, borderRadius: 2 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12, marginBottom: 8 }}>
+                    <p style={{ fontSize: 13.5, fontWeight: 600, color: "#17150F", margin: 0 }}>{flag.clause.section}</p>
+                    <span style={{
+                      fontFamily: "'IBM Plex Mono',monospace",
+                      fontSize: 9,
+                      letterSpacing: "0.08em",
+                      textTransform: "uppercase",
+                      color: flag.severity === "high" ? "#A82F24" : "#8B651B",
+                      background: flag.severity === "high" ? "#FDF5F5" : "#FDF9F2",
+                      border: flag.severity === "high" ? "1px solid #EFA7A0" : "1px solid #E8D9BD",
+                      padding: "2px 6px",
+                      borderRadius: 2
+                    }}>
                       {flag.severity}
                     </span>
                   </div>
-                  <p className="mt-2 text-sm leading-5 text-ink-muted">{flag.reason}</p>
-                  <p className="mt-3 border-l-2 border-seal pl-3 text-sm leading-5">{flag.suggestedRedline}</p>
+                  <p style={{ margin: "0 0 12px", fontSize: 12.5, color: "#5C574C", lineHeight: 1.5 }}>{flag.reason}</p>
+                  <p style={{ margin: 0, fontStyle: "italic", borderLeft: "2px solid #7A1F2B", paddingLeft: 12, fontSize: 12.5, color: "#17150F", lineHeight: 1.45 }}>
+                    {flag.suggestedRedline}
+                  </p>
                 </div>
               ))}
             </div>
