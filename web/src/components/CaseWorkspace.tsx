@@ -75,6 +75,7 @@ export function CaseWorkspace() {
     sentAuditId,
     sentHash,
     actionError,
+    authLink,
     routeToAttorney,
     approveAndSend,
     resetCase,
@@ -743,6 +744,30 @@ export function CaseWorkspace() {
                     {actionError && (
                       <div style={{ fontSize: 12.5, color: "#8E2D20", lineHeight: 1.4 }}>
                         Server blocked action: {actionError}
+                      </div>
+                    )}
+                    {authLink && (
+                      <div
+                        style={{
+                          padding: "11px 13px",
+                          background: "#F1E7D3",
+                          border: "1px solid #E3D4B2",
+                          borderRadius: 3,
+                          fontSize: 12.5,
+                          color: "#6E5212",
+                          lineHeight: 1.5,
+                        }}
+                      >
+                        Gmail isn&apos;t connected for this identity yet. Authorize once, then retry:
+                        <br />
+                        <a
+                          href={authLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{ color: "#8E2D20", wordBreak: "break-all" }}
+                        >
+                          {authLink}
+                        </a>
                       </div>
                     )}
                     <div

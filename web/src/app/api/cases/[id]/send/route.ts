@@ -15,7 +15,14 @@ export async function POST(
     return Response.json({ error: (error as Error).message }, { status: 403 });
   }
 
-  const result = sendCaseRedline(id, session);
-  if (!result) return Response.json({ error: "Case not found" }, { status: 404 });
-  return Response.json(result);
+  try {
+    const result = await sendCaseRedline(id, session);
+    if (!result) return Response.json({ error: "Case not found" }, { status: 404 });
+    return Response.json(result);
+  } catch (error) {
+    return Response.json(
+      { error: error instanceof Error ? error.message : String(error) },
+      { status: 500 }
+    );
+  }
 }

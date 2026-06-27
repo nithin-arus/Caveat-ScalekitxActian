@@ -1,4 +1,10 @@
 .DS_Store
+node_modules/
+
+# Secrets — never commit real credentials.
+.env
+.env.*
+!.env.example
 
 # Runtime output from the local cron -> worker demo.
 data/generated/watch_jobs.jsonl

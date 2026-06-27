@@ -194,6 +194,7 @@ interface CaseState {
   sentAuditId: string | null;
   sentHash: string | null;
   actionError: string | null;
+  authLink: string | null;
   showSso: boolean;
   clauses: Clause[];
   citywideMatches: number;
@@ -223,6 +224,7 @@ export function CaseProvider({ children }: { children: ReactNode }) {
   const [sentAuditId, setSentAuditId] = useState<string | null>(null);
   const [sentHash, setSentHash] = useState<string | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
+  const [authLink, setAuthLink] = useState<string | null>(null);
   const [serverAuditEntries, setServerAuditEntries] = useState<AuditEntry[]>([]);
   const [showSso, setShowSso] = useState(false);
 
@@ -319,6 +321,7 @@ export function CaseProvider({ children }: { children: ReactNode }) {
     sentAuditId,
     sentHash,
     actionError,
+    authLink,
     showSso,
     clauses: CLAUSES,
     citywideMatches: CITYWIDE_MATCHES,
@@ -350,11 +353,22 @@ export function CaseProvider({ children }: { children: ReactNode }) {
     },
     approveAndSend: async () => {
       setActionError(null);
+      setAuthLink(null);
       const response = await fetch("/api/cases/lease-gotcha/send", { method: "POST" });
-      const payload = (await response.json()) as { error?: string; audit?: ServerAuditEntry };
+      const payload = (await response.json()) as {
+        error?: string;
+        audit?: ServerAuditEntry;
+        needsAuth?: boolean;
+        link?: string;
+      };
 
       if (!response.ok) {
         setActionError(payload.error ?? "Send blocked by server policy.");
+        return;
+      }
+
+      if (payload.needsAuth) {
+        setAuthLink(payload.link ?? null);
         return;
       }
 
@@ -372,6 +386,7 @@ export function CaseProvider({ children }: { children: ReactNode }) {
       setSentAuditId(null);
       setSentHash(null);
       setActionError(null);
+      setAuthLink(null);
       setServerAuditEntries([]);
     },
   };

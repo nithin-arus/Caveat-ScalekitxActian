@@ -2,6 +2,7 @@ import type { Analysis, AuditEntry, SessionIdentity } from "@shared/contracts";
 import { sampleAuditLog } from "@/lib/data";
 import { createAuditEntry } from "@/lib/audit";
 import { getAllAnalyses, getAnalysis } from "@/lib/data";
+import { demoIdentifier, ensureGmailAuthorized, sendGmailAsUser } from "@/lib/scalekitAgent";
 
 type CasePatch = Pick<Analysis, "status" | "routedAt" | "routedBy">;
 
@@ -63,9 +64,28 @@ export function routeCaseToAttorney(id: string, session: SessionIdentity) {
   return { analysis: { ...analysis, ...patches()[id] }, audit };
 }
 
-export function sendCaseRedline(id: string, session: SessionIdentity) {
+export async function sendCaseRedline(id: string, session: SessionIdentity) {
   const analysis = getCaseForSession(id, session);
   if (!analysis) return null;
+
+  const identifier = demoIdentifier(session.email);
+  const { authorized, link } = await ensureGmailAuthorized(identifier);
+  if (!authorized) {
+    return { needsAuth: true as const, link };
+  }
+
+  const to = process.env.CAVEAT_DEMO_RECIPIENT || session.email;
+  await sendGmailAsUser(identifier, {
+    to,
+    subject: `Re: ${analysis.title} — Negotiated Redline`,
+    body: [
+      `Re: ${analysis.title}`,
+      "",
+      `Demand is made to address the flagged clauses within 10 days.`,
+      "",
+      `— Sent on behalf of the tenant via Fineprint, with attorney approval and a signed audit trail.`,
+    ].join("\n"),
+  });
 
   patches()[id] = {
     ...patches()[id],
@@ -74,7 +94,7 @@ export function sendCaseRedline(id: string, session: SessionIdentity) {
 
   const audit = createAuditEntry({
     action: "sendRedline",
-    detail: `${session.name} approved and sent the negotiated redline packet for ${analysis.title}.`,
+    detail: `${session.name} approved and sent the negotiated redline packet for ${analysis.title} to ${to} via Scalekit/Gmail.`,
     ok: true,
     session,
   });

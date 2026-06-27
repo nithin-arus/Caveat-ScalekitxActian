@@ -10,9 +10,10 @@ type Props = {
 };
 
 type SendState = {
-  status: "idle" | "sending" | "sent" | "blocked";
+  status: "idle" | "sending" | "sent" | "blocked" | "needs-auth";
   message?: string;
   audit?: AuditEntry;
+  link?: string;
 };
 
 function severityCount(caseItem: Analysis, severity: "high" | "med" | "low") {
@@ -27,12 +28,30 @@ export function ApprovalsQueue({ initialCases, session, canApprove }: Props) {
     setSendState((state) => ({ ...state, [id]: { status: "sending", message: "Sending scoped action..." } }));
 
     const response = await fetch(`/api/cases/${id}/send`, { method: "POST" });
-    const payload = (await response.json()) as { error?: string; audit?: AuditEntry; analysis?: Analysis };
+    const payload = (await response.json()) as {
+      error?: string;
+      audit?: AuditEntry;
+      analysis?: Analysis;
+      needsAuth?: boolean;
+      link?: string;
+    };
 
     if (!response.ok) {
       setSendState((state) => ({
         ...state,
         [id]: { status: "blocked", message: payload.error ?? "Scalekit action blocked by policy." },
+      }));
+      return;
+    }
+
+    if (payload.needsAuth) {
+      setSendState((state) => ({
+        ...state,
+        [id]: {
+          status: "needs-auth",
+          message: "Gmail isn't connected for this identity yet. Authorize once, then retry.",
+          link: payload.link,
+        },
       }));
       return;
     }
@@ -195,7 +214,18 @@ export function ApprovalsQueue({ initialCases, session, canApprove }: Props) {
                     {state.message}
                   </p>
                 )}
-                
+
+                {state.status === "needs-auth" && state.link && (
+                  <a
+                    href={state.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ display: "block", marginTop: 6, fontSize: 11.5, color: "#8E2D20", wordBreak: "break-all" }}
+                  >
+                    {state.link}
+                  </a>
+                )}
+
                 {state.audit && (
                   <div style={{ marginTop: 8, paddingTop: 8, borderTop: "1px dashed #DCD7CB", fontFamily: "'IBM Plex Mono',monospace", fontSize: 9.5, color: "#9A9384", wordBreak: "break-all" }}>
                     <div>ID: {state.audit.auditId}</div>
