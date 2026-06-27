@@ -6,7 +6,8 @@ Current behavior:
 
 - Reads `mock_inbox.json`.
 - Detects lease and offer-letter messages.
-- Emits a structured event that the worker can later turn into analysis jobs.
+- Emits a structured event.
+- When `WATCH_DRY_RUN=false`, writes analysis jobs to `CAVEAT_QUEUE_FILE` for the worker.
 
 Run from this folder:
 
@@ -17,5 +18,5 @@ npm run watch
 Day-of swap:
 
 - Replace the mock inbox reader with Scalekit Gmail/Drive calls.
-- Keep the output shape stable so the worker queue does not change.
-- Set `WATCH_DRY_RUN=false` when real queue enqueueing exists.
+- Keep the `AnalysisJob` output shape stable so the worker queue does not change.
+- Replace the file queue with Render Key Value / Redis enqueueing.

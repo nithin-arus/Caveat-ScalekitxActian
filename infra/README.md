@@ -7,6 +7,7 @@ This folder is Tejas-owned scaffolding for local services, Render deployment, an
 - `.env.example` lists every expected app, sponsor, queue, and cron variable.
 - `docker-compose.yml` starts local Redis now and reserves an Actian service profile for the confirmed image.
 - `render.yaml` defines the target Render topology: web, worker, Actian private service, cron, and key-value queue.
+- `../worker` consumes cron findings and writes demo analysis results without sponsor keys.
 
 ## Local Setup
 
@@ -33,6 +34,17 @@ node --experimental-strip-types data/seed.ts
 
 If the local Node version does not support type stripping, run the same file through `tsx` once the repo package setup exists.
 
+## Local Queue Demo
+
+From the repo root:
+
+```sh
+WATCH_DRY_RUN=false npm --prefix cron run watch
+npm --prefix worker run worker
+```
+
+The cron watcher writes jobs to `data/generated/watch_jobs.jsonl`. The worker consumes that file, writes results to `data/generated/worker_results.json`, and archives the processed queue.
+
 ## Day-Of Swap Checklist
 
 1. Replace `ACTIAN_IMAGE_TODO` with the confirmed Actian image.
@@ -41,6 +53,7 @@ If the local Node version does not support type stripping, run the same file thr
 4. Confirm `ACTIAN_URL` and `REDIS_URL` resolve inside Render private networking.
 5. Run the seed job against Actian.
 6. Trigger `caveat-watch` manually once before the live demo.
+7. Run `caveat-agent` once and confirm completed jobs appear in the worker results or Redis-backed job store.
 
 ## Notes
 

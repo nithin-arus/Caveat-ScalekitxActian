@@ -1,0 +1,9 @@
+{
+  "name": "@caveat/worker",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "worker": "node --experimental-strip-types worker.ts",
+    "demo": "CAVEAT_RUN_ONCE=true node --experimental-strip-types worker.ts"
+  }
+}

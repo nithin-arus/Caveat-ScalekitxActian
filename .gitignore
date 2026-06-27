@@ -1,0 +1,6 @@
+.DS_Store
+
+# Runtime output from the local cron -> worker demo.
+data/generated/watch_jobs.jsonl
+data/generated/watch_jobs.jsonl.*.processed
+data/generated/worker_results.json
