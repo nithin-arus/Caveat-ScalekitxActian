@@ -1,24 +1,8 @@
 import { sampleAnalyses, sampleAuditLog, sampleWatchEvents } from "@data/fixtures/analyses";
-import type { Analysis, Permission, SessionIdentity, Tenant } from "@shared/contracts";
+import { tenantForId, tenants } from "@shared/config";
+import type { Analysis, Permission, SessionIdentity } from "@shared/contracts";
 
-export const tenants: Tenant[] = [
-  {
-    id: "sf-tu",
-    oid: "org_sf_tenants_union",
-    name: "SF Tenants Union",
-    brand: "Mission Defense Desk",
-    idpDomain: "sso.sftu.example",
-    accent: "#7a1f2b",
-  },
-  {
-    id: "oak-legal",
-    oid: "org_oakland_legal_aid",
-    name: "Oakland Legal Aid",
-    brand: "East Bay Housing Clinic",
-    idpDomain: "idp.oaklegalaid.example",
-    accent: "#245b47",
-  },
-];
+export { tenantForId, tenantForOid, tenants } from "@shared/config";
 
 const caseTenants: Record<string, string> = {
   "lease-sketchy": "sf-tu",
@@ -53,19 +37,13 @@ export const mockPersonas: Array<{
   },
 ];
 
-export function tenantForId(tenantId: string): Tenant {
-  return tenants.find((tenant) => tenant.id === tenantId) ?? tenants[0];
-}
-
-export function tenantForOid(oid: string): Tenant {
-  return tenants.find((tenant) => tenant.oid === oid) ?? tenants[0];
-}
-
 export function decorateAnalysis(analysis: Analysis): Analysis {
+  const defaultAwaiting = analysis.id === "lease-gotcha" || analysis.id === "offer-startup";
+
   return {
     ...analysis,
-    tenantId: analysis.tenantId ?? caseTenants[analysis.id] ?? tenants[0].id,
-    status: analysis.status ?? (analysis.id === "lease-gotcha" ? "awaiting_approval" : "reviewed"),
+    tenantId: caseTenants[analysis.id] ?? analysis.tenantId ?? tenants[0].id,
+    status: analysis.status ?? (defaultAwaiting ? "awaiting_approval" : "reviewed"),
   };
 }
 

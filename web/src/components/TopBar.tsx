@@ -103,12 +103,12 @@ export function TopBar() {
             <Link href="/audit" style={navStyle(pathname === "/audit")}>
               Audit Log
             </Link>
-            {role === "attorney" && (
+            {(role === "attorney" || role === "supervisor") && (
               <Link href="/approvals" style={navStyle(pathname === "/approvals")}>
                 Approvals
               </Link>
             )}
-            {role === "attorney" && (
+            {role === "supervisor" && (
               <Link href="/radar" style={navStyle(pathname === "/radar")}>
                 Radar
               </Link>

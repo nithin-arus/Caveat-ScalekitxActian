@@ -1,57 +1,43 @@
-import Link from "next/link";
 import { getSession } from "@/lib/session";
 import { hasPermission } from "@/lib/rbac";
 import { listCasesForSession } from "@/lib/server-store";
+import { ApprovalsQueue } from "@/components/ApprovalsQueue";
 
 export default async function ApprovalsPage() {
   const session = await getSession();
   const canApprove = hasPermission(session, "act:redline");
-  const cases = canApprove
-    ? listCasesForSession(session).filter((item) => item.status === "awaiting_approval")
-    : [];
+  const cases = listCasesForSession(session).filter((item) => item.status === "awaiting_approval");
 
   return (
-    <div className="mx-auto max-w-5xl w-full px-6 py-16 flex flex-col gap-8">
-      <div className="space-y-2">
-        <p className="text-sm font-semibold uppercase tracking-widest text-seal">Approver only</p>
-        <h1 className="text-3xl font-semibold tracking-tight">Attorney approvals</h1>
-        <p className="text-ink-muted">
-          Routed cases for {session.tenant.name}. Reviewers can prepare the packet, but only an
-          Approver with <span className="font-mono">act:redline</span> can send.
-        </p>
-      </div>
-
-      {!canApprove && (
-        <div className="rounded-xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-800">
-          Requires Attorney Approval. Sign in as an Approver to see this queue.
+    <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-12">
+      <div className="grid gap-5 lg:grid-cols-[1fr_320px] lg:items-end">
+        <div className="space-y-2">
+          <p className="text-sm font-semibold uppercase tracking-widest text-seal">Scalekit approval chain</p>
+          <h1 className="text-3xl font-semibold tracking-tight">Attorney approvals</h1>
+          <p className="max-w-3xl text-ink-muted">
+            Routed cases for {session.tenant.name}. Reviewers can prepare the packet, but only an
+            Approver or Supervisor with <span className="font-mono">act:redline</span> can send a
+            redline as the organization.
+          </p>
         </div>
-      )}
-
-      {canApprove && cases.length === 0 && (
-        <div className="rounded-xl border border-ink/10 bg-paper-muted/50 px-5 py-8 text-center text-ink-muted">
-          No cases are waiting for approval in this tenant.
-        </div>
-      )}
-
-      <div className="grid gap-3">
-        {cases.map((item) => (
-          <Link
-            key={item.id}
-            href={`/analysis/${item.id}`}
-            className="flex flex-col gap-3 rounded-lg border border-ink/10 bg-paper px-5 py-4 hover:border-seal/40 hover:bg-paper-muted/60 transition-colors sm:flex-row sm:items-center sm:justify-between"
-          >
-            <div>
-              <p className="font-medium">{item.title}</p>
-              <p className="text-sm text-ink-muted">
-                Routed by {item.routedBy ?? "Dana Reviewer"} · Risk {item.riskScore}
-              </p>
+        <div className="rounded-lg border border-ink/10 bg-paper p-5">
+          <p className="text-xs font-semibold uppercase tracking-widest text-ink-muted">Current identity</p>
+          <p className="mt-2 text-lg font-semibold">{session.name}</p>
+          <p className="text-sm text-ink-muted">{session.roles.join(", ") || "reviewer"}</p>
+          <div className="mt-4 grid grid-cols-2 gap-2 text-center text-xs">
+            <div className="rounded bg-paper-muted px-3 py-2">
+              <p className="font-mono text-lg">{cases.length}</p>
+              <p className="text-ink-muted">queued</p>
             </div>
-            <span className="rounded-full bg-seal px-4 py-2 text-sm font-medium text-paper">
-              Review and send
-            </span>
-          </Link>
-        ))}
+            <div className="rounded bg-paper-muted px-3 py-2">
+              <p className="font-mono text-lg">{canApprove ? "ON" : "NO"}</p>
+              <p className="text-ink-muted">send scope</p>
+            </div>
+          </div>
+        </div>
       </div>
+
+      <ApprovalsQueue initialCases={cases} session={session} canApprove={canApprove} />
     </div>
   );
 }

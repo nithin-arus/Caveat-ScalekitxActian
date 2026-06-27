@@ -1,3 +1,5 @@
+import { scalekitEnvUrl } from "@/lib/config";
+
 type ScalekitLike = {
   getAuthorizationUrl?: (redirectUri: string, options: { scopes: string[] }) => Promise<string> | string;
   authenticateWithCode?: (code: string, redirectUri: string) => Promise<unknown>;
@@ -5,7 +7,7 @@ type ScalekitLike = {
 };
 
 export async function getScalekitClient(): Promise<ScalekitLike> {
-  const envUrl = process.env.SCALEKIT_ENVIRONMENT_URL;
+  const envUrl = scalekitEnvUrl();
   const clientId = process.env.SCALEKIT_CLIENT_ID;
   const clientSecret = process.env.SCALEKIT_CLIENT_SECRET;
 
@@ -14,6 +16,6 @@ export async function getScalekitClient(): Promise<ScalekitLike> {
   }
 
   throw new Error(
-    "Install @scalekit-sdk/node and replace this stub with new Scalekit(envUrl, clientId, clientSecret)."
+    "Install @scalekit-sdk/node and replace this stub with new ScalekitClient(envUrl, clientId, clientSecret)."
   );
 }

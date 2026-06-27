@@ -3,7 +3,7 @@
 import { useCase } from "@/lib/caseStore";
 
 export function SsoModal() {
-  const { showSso, closeSso, pickParalegal, pickAttorney, tenant } = useCase();
+  const { showSso, closeSso, pickParalegal, pickAttorney, pickSupervisor, tenant } = useCase();
 
   if (!showSso) return null;
 
@@ -157,6 +157,59 @@ export function SsoModal() {
               }}
             >
               Approver
+            </span>
+          </button>
+          <button
+            onClick={pickSupervisor}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 14,
+              padding: 14,
+              border: "1px solid #DCD7CB",
+              borderRadius: 3,
+              background: "#FCFBF7",
+              cursor: "pointer",
+              width: "100%",
+              textAlign: "left",
+              marginTop: 11,
+            }}
+          >
+            <span
+              style={{
+                width: 38,
+                height: 38,
+                borderRadius: "50%",
+                background: "#E8CCD1",
+                color: "#7A1F2B",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontFamily: "'Newsreader',serif",
+                fontSize: 16,
+                fontWeight: 500,
+                flexShrink: 0,
+              }}
+            >
+              PS
+            </span>
+            <div style={{ flex: 1, lineHeight: 1.3 }}>
+              <div style={{ fontSize: 14, fontWeight: 600, color: "#17150F" }}>Priya Shah</div>
+              <div style={{ fontSize: 11.5, color: "#79746A" }}>Supervisor · Toxicity Radar</div>
+            </div>
+            <span
+              style={{
+                fontFamily: "'IBM Plex Mono',monospace",
+                fontSize: 9,
+                letterSpacing: "0.1em",
+                color: "#7A1F2B",
+                background: "#F1E2E4",
+                padding: "4px 8px",
+                borderRadius: 2,
+                textTransform: "uppercase",
+              }}
+            >
+              Admin
             </span>
           </button>
         </div>

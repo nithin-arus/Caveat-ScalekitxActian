@@ -8,6 +8,11 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-paper: #fbfaf6;
+  --color-paper-muted: #e9e4d8;
+  --color-ink: #17150f;
+  --color-ink-muted: #746f64;
+  --color-seal: #7a1f2b;
   --font-sans: var(--font-newsreader);
   --font-mono: var(--font-ibm-plex-mono);
 }

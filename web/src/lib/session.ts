@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import type { SessionIdentity } from "@shared/contracts";
-import { buildMockSession, tenantForOid } from "@/lib/data";
+import { tenantForOid } from "@shared/config";
+import { buildMockSession } from "@/lib/data";
 
 export const SESSION_COOKIE = "caveat_session";
 
@@ -26,6 +27,14 @@ function arrayOfStrings(value: unknown): string[] {
   return Array.isArray(value) ? value.filter((item): item is string => typeof item === "string") : [];
 }
 
+function firstString(payload: Record<string, unknown> | null, keys: string[], fallback: string) {
+  for (const key of keys) {
+    const value = payload?.[key];
+    if (typeof value === "string" && value.length > 0) return value;
+  }
+  return fallback;
+}
+
 export function encodeMockSession(role: MockSessionCookie["role"], tenantId: string) {
   return Buffer.from(JSON.stringify({ role, tenantId }), "utf8").toString("base64url");
 }
@@ -36,17 +45,19 @@ export async function getSession(): Promise<SessionIdentity> {
 
   if (process.env.MOCK_AUTH !== "1" && accessToken) {
     const payload = decodeJwtPayload(accessToken);
-    const oid = typeof payload?.oid === "string" ? payload.oid : "org_sf_tenants_union";
+    const oid = firstString(payload, ["oid", "org_id", "organization_id", "tenant_id"], "org_sf_tenants_union");
     const tenant = tenantForOid(oid);
+    const roles = arrayOfStrings(payload?.roles);
+    const permissions = arrayOfStrings(payload?.permissions) as SessionIdentity["permissions"];
 
     return {
-      sub: typeof payload?.sub === "string" ? payload.sub : "scalekit_user",
+      sub: firstString(payload, ["sub", "user_id"], "scalekit_user"),
       oid,
       tenantId: tenant.id,
-      name: typeof payload?.name === "string" ? payload.name : "Scalekit User",
-      email: typeof payload?.email === "string" ? payload.email : "user@example.com",
-      roles: arrayOfStrings(payload?.roles),
-      permissions: arrayOfStrings(payload?.permissions) as SessionIdentity["permissions"],
+      name: firstString(payload, ["name", "given_name", "email"], "Scalekit User"),
+      email: firstString(payload, ["email", "preferred_username"], "user@example.com"),
+      roles,
+      permissions: permissions.length > 0 ? permissions : ["read:cases", "route:redline"],
       tenant,
       mode: "scalekit",
     };

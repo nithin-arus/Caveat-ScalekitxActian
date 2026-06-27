@@ -74,7 +74,7 @@ export function sendCaseRedline(id: string, session: SessionIdentity) {
 
   const audit = createAuditEntry({
     action: "sendRedline",
-    detail: `${session.name} approved and sent a cease-and-desist redline for ${analysis.title}.`,
+    detail: `${session.name} approved and sent the negotiated redline packet for ${analysis.title}.`,
     ok: true,
     session,
   });

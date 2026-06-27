@@ -1,6 +1,7 @@
 import { getSession } from "@/lib/session";
 import { hasPermission } from "@/lib/rbac";
 import { listCasesForSession } from "@/lib/server-store";
+import { tenantMemoryCollection } from "@shared/config";
 
 export async function GET() {
   const session = await getSession();
@@ -9,19 +10,27 @@ export async function GET() {
   }
 
   const cases = listCasesForSession(session);
-  const highRiskFlags = cases.flatMap((item) => item.flags.filter((flag) => flag.severity === "high"));
+  const highRiskFlags = cases.flatMap((item) =>
+    item.flags
+      .filter((flag) => flag.severity === "high" || flag.severity === "med")
+      .map((flag) => ({ ...flag, caseTitle: item.title }))
+  );
   const patterns = highRiskFlags.map((flag, index) => ({
     id: flag.id,
     clause: flag.clause.section,
-    neighborhood: index % 2 === 0 ? "Mission District" : "Tenderloin",
-    count: 8 + index * 7,
-    match: 0.91 - index * 0.04,
-    landlord: index % 2 === 0 ? "Skyline Holdings" : "Bayview Residential",
+    caseTitle: flag.caseTitle,
+    neighborhood: session.tenantId === "sf-tu" ? (index % 2 === 0 ? "Mission District" : "Tenderloin") : (index % 2 === 0 ? "Downtown Oakland" : "Temescal"),
+    count: 12 + index * 6 + (flag.severity === "high" ? 8 : 0),
+    match: 0.96 - index * 0.03,
+    actor: session.tenantId === "sf-tu" ? (index % 2 === 0 ? "Skyline Holdings" : "Bayview Residential") : (index % 2 === 0 ? "SeedStage Labs" : "Harbor Property Group"),
+    severity: flag.severity,
   }));
 
   return Response.json({
     session,
-    source: "Local Actian VectorAI adapter (mock fallback)",
+    source: "Actian VectorAI tenant-scoped semantic radar (mock fallback)",
+    collection: tenantMemoryCollection(session.tenantId, session.sub),
+    playbookCollection: "clause_playbook",
     totalMatches: patterns.reduce((sum, item) => sum + item.count, 0),
     patterns,
   });

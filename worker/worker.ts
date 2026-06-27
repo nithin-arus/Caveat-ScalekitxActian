@@ -27,6 +27,12 @@ type WorkerResult = {
 
 const DEFAULT_QUEUE_FILE = "../data/generated/watch_jobs.jsonl";
 const DEFAULT_RESULTS_FILE = "../data/generated/worker_results.json";
+const CASE_TENANTS: Record<string, string> = {
+  "lease-sketchy": "sf-tu",
+  "lease-gotcha": "sf-tu",
+  "lease-clean": "oak-legal",
+  "offer-startup": "oak-legal"
+};
 
 function env(name: string, fallback: string): string {
   return process.env[name] || fallback;
@@ -75,6 +81,7 @@ function analysisForJob(job: AnalysisJob): Analysis {
 
   return {
     ...analysis,
+    tenantId: CASE_TENANTS[analysis.id] ?? analysis.tenantId,
     createdAt: new Date().toISOString()
   };
 }

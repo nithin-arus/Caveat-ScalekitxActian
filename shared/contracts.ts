@@ -108,6 +108,8 @@ export interface Tenant {
   brand: string;
   idpDomain: string;
   accent: string;
+  actianCollectionPrefix: string;
+  scalekitOrganizationId: string;
 }
 
 export interface SessionIdentity {
@@ -120,4 +122,15 @@ export interface SessionIdentity {
   permissions: Permission[];
   tenant: Tenant;
   mode: "mock" | "scalekit";
+}
+
+export type IntegrationKey = "auth" | "data" | "gmail" | "notifications";
+
+export interface IntegrationProvider {
+  key: IntegrationKey;
+  name: string;
+  provider: "scalekit" | "actian" | "render" | "internal";
+  phase: "active" | "prepared" | "planned";
+  requiredEnv: string[];
+  notes: string;
 }

@@ -27,6 +27,41 @@ function HeatStrip({ values }: { values: number[] }) {
   );
 }
 
+const WORKSPACE_PROFILES = {
+  "SF Tenants Union": {
+    caseNo: "CR-2026-0414",
+    headline: (
+      <>
+        Delgado <span style={{ fontStyle: "italic", color: "#6E685C" }}>v.</span> Skyline Holdings&nbsp;LLC
+      </>
+    ),
+    doc: "1408 Mission St — Residential Lease.pdf",
+    pages: 40,
+    analyst: "Dana Okafor",
+    risk: 87,
+    status: "HIGH · 2 critical clauses",
+    idp: "sf-tenants.okta.com",
+    sentTitle: "Redline packet deployed",
+    sentDetail: "Sent to landlord counsel · chain of custody sealed",
+  },
+  "Oakland Legal Aid": {
+    caseNo: "CR-2026-0528",
+    headline: (
+      <>
+        Chen <span style={{ fontStyle: "italic", color: "#6E685C" }}>offer review</span> Foundry AI
+      </>
+    ),
+    doc: "Founding Product Engineer Offer Letter.pdf",
+    pages: 12,
+    analyst: "Priya Shah",
+    risk: 76,
+    status: "HIGH · equity and IP risk",
+    idp: "idp.oaklegalaid.example",
+    sentTitle: "Counter-offer packet deployed",
+    sentDetail: "Sent to hiring team · chain of custody sealed",
+  },
+};
+
 export function CaseWorkspace() {
   const {
     role,
@@ -46,8 +81,9 @@ export function CaseWorkspace() {
     tenant,
   } = useCase();
 
-  const isAttorney = role === "attorney";
+  const isAttorney = role === "attorney" || role === "supervisor";
   const isParalegal = role === "paralegal";
+  const workspace = WORKSPACE_PROFILES[tenant as keyof typeof WORKSPACE_PROFILES] ?? WORKSPACE_PROFILES["SF Tenants Union"];
 
   return (
     <div style={{ maxWidth: 1340, margin: "0 auto", padding: "34px 40px 80px" }}>
@@ -74,7 +110,7 @@ export function CaseWorkspace() {
               marginBottom: 14,
             }}
           >
-            Case&nbsp;&nbsp;CR-2026-0414&nbsp;&nbsp;/&nbsp;&nbsp;Open · {tenant}
+            Case&nbsp;&nbsp;{workspace.caseNo}&nbsp;&nbsp;/&nbsp;&nbsp;Open · {tenant}
           </div>
           <h1
             style={{
@@ -86,7 +122,7 @@ export function CaseWorkspace() {
               margin: "0 0 16px",
             }}
           >
-            Delgado <span style={{ fontStyle: "italic", color: "#6E685C" }}>v.</span> Skyline Holdings&nbsp;LLC
+            {workspace.headline}
           </h1>
           <div
             style={{
@@ -99,13 +135,13 @@ export function CaseWorkspace() {
             }}
           >
             <span>
-              <span style={{ color: "#A9A294" }}>DOC </span>1408 Mission St — Residential Lease.pdf
+              <span style={{ color: "#A9A294" }}>DOC </span>{workspace.doc}
             </span>
             <span>
-              <span style={{ color: "#A9A294" }}>PAGES </span>40
+              <span style={{ color: "#A9A294" }}>PAGES </span>{workspace.pages}
             </span>
             <span>
-              <span style={{ color: "#A9A294" }}>ANALYST </span>Dana Okafor
+              <span style={{ color: "#A9A294" }}>ANALYST </span>{workspace.analyst}
             </span>
             <span>
               <span style={{ color: "#A9A294" }}>UPLOADED </span>Jun 27, 2026 · 09:14
@@ -135,7 +171,7 @@ export function CaseWorkspace() {
                 color: "#B23B2A",
               }}
             >
-              87
+              {workspace.risk}
             </span>
             <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 11, color: "#9A9384" }}>/100</span>
           </div>
@@ -153,7 +189,7 @@ export function CaseWorkspace() {
           >
             <span style={{ width: 6, height: 6, background: "#B23B2A", borderRadius: "50%" }} />
             <span style={{ fontSize: 11, fontWeight: 600, color: "#8E2D20", letterSpacing: "0.02em" }}>
-              HIGH · 2 critical clauses
+              {workspace.status}
             </span>
           </div>
         </div>
@@ -746,10 +782,10 @@ export function CaseWorkspace() {
                   </span>
                   <div style={{ lineHeight: 1.25 }}>
                     <div style={{ fontFamily: "'Newsreader',Georgia,serif", fontSize: 18, fontWeight: 500 }}>
-                      Cease &amp; Desist deployed
+                      {workspace.sentTitle}
                     </div>
                     <div style={{ fontSize: 12, color: "#79746A" }}>
-                      Injected to landlord agent · chain of custody sealed
+                      {workspace.sentDetail}
                     </div>
                   </div>
                 </div>
@@ -778,7 +814,7 @@ export function CaseWorkspace() {
                     <span style={{ color: "#A9A294" }}>SIGNER </span>Marcus Vela · Approver
                   </div>
                   <div>
-                    <span style={{ color: "#A9A294" }}>VIA </span>Scalekit SAML · sf-tenants.okta.com
+                    <span style={{ color: "#A9A294" }}>VIA </span>Scalekit SAML · {workspace.idp}
                   </div>
                 </div>
                 <div style={{ display: "flex", gap: 10, marginTop: 14 }}>

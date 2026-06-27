@@ -1,18 +1,18 @@
 services:
   caveat-actian:
-    image: ${ACTIAN_IMAGE:-ACTIAN_IMAGE_TODO}
+    image: ${ACTIAN_IMAGE:-actian/vectorai:latest}
     container_name: caveat-actian
     profiles: ["actian"]
     environment:
-      ACTIAN_DATABASE: ${ACTIAN_DATABASE:-caveat}
-      ACTIAN_USER: ${ACTIAN_USER:-caveat}
-      ACTIAN_PASSWORD: ${ACTIAN_PASSWORD:-caveat_dev_password}
+      ACTIAN_VECTORAI_ACCEPT_EULA: ${ACTIAN_VECTORAI_ACCEPT_EULA:-YES}
     ports:
-      - "${ACTIAN_PORT:-5432}:5432"
+      - "6573:6573"
+      - "${ACTIAN_PORT:-6574}:6574"
+      - "6575:6575"
     volumes:
-      - caveat-actian-data:/var/lib/actian
+      - caveat-actian-data:/var/lib/actian-vectorai
     healthcheck:
-      test: ["CMD-SHELL", "echo 'replace with Actian healthcheck once image is confirmed'"]
+      test: ["CMD-SHELL", "test -d /var/lib/actian-vectorai"]
       interval: 30s
       timeout: 5s
       retries: 3

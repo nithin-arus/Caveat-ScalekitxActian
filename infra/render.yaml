@@ -10,9 +10,14 @@ services:
       - { key: CAVEAT_DATA_DIR, value: ../data }
       - { key: CAVEAT_QUEUE_FILE, value: ../data/generated/watch_jobs.jsonl }
       - { key: CAVEAT_RESULTS_FILE, value: ../data/generated/worker_results.json }
+      - { key: ACTIAN_VECTOR_DIMENSIONS, value: "384" }
+      - { key: ACTIAN_PLAYBOOK_COLLECTION, value: clause_playbook }
       - { key: SCALEKIT_ENV_URL, sync: false }
       - { key: SCALEKIT_CLIENT_ID, sync: false }
       - { key: SCALEKIT_CLIENT_SECRET, sync: false }
+      - { key: SCALEKIT_DEFAULT_CONNECTIONS, value: gmail,googledrive }
+      - { key: SCALEKIT_READ_ONLY_SCOPE, value: openid,profile,email,read }
+      - { key: SCALEKIT_ACT_SCOPE, value: openid,profile,email,read,send }
       - { key: ANTHROPIC_API_KEY, sync: false }
       - key: ACTIAN_URL
         fromService: { type: pserv, name: caveat-actian, property: hostport }
@@ -30,9 +35,12 @@ services:
       - { key: CAVEAT_DATA_DIR, value: ../data }
       - { key: CAVEAT_QUEUE_FILE, value: ../data/generated/watch_jobs.jsonl }
       - { key: CAVEAT_RESULTS_FILE, value: ../data/generated/worker_results.json }
+      - { key: ACTIAN_VECTOR_DIMENSIONS, value: "384" }
+      - { key: ACTIAN_PLAYBOOK_COLLECTION, value: clause_playbook }
       - { key: SCALEKIT_ENV_URL, sync: false }
       - { key: SCALEKIT_CLIENT_ID, sync: false }
       - { key: SCALEKIT_CLIENT_SECRET, sync: false }
+      - { key: SCALEKIT_DEFAULT_CONNECTIONS, value: gmail,googledrive }
       - { key: ANTHROPIC_API_KEY, sync: false }
       - key: ACTIAN_URL
         fromService: { type: pserv, name: caveat-actian, property: hostport }
@@ -42,12 +50,10 @@ services:
   - type: pserv
     name: caveat-actian
     runtime: image
-    image: { url: "ACTIAN_IMAGE_TODO" }
-    disk: { name: actian-data, mountPath: /var/lib/actian, sizeGB: 1 }
+    image: { url: "actian/vectorai:latest" }
+    disk: { name: actian-data, mountPath: /var/lib/actian-vectorai, sizeGB: 1 }
     envVars:
-      - { key: ACTIAN_DATABASE, value: caveat }
-      - { key: ACTIAN_USER, value: caveat }
-      - { key: ACTIAN_PASSWORD, sync: false }
+      - { key: ACTIAN_VECTORAI_ACCEPT_EULA, value: "YES" }
 
   - type: cron
     name: caveat-watch
@@ -62,9 +68,12 @@ services:
       - { key: CAVEAT_QUEUE_FILE, value: ../data/generated/watch_jobs.jsonl }
       - { key: CAVEAT_RESULTS_FILE, value: ../data/generated/worker_results.json }
       - { key: WATCH_DRY_RUN, value: "false" }
+      - { key: ACTIAN_VECTOR_DIMENSIONS, value: "384" }
+      - { key: ACTIAN_PLAYBOOK_COLLECTION, value: clause_playbook }
       - { key: SCALEKIT_ENV_URL, sync: false }
       - { key: SCALEKIT_CLIENT_ID, sync: false }
       - { key: SCALEKIT_CLIENT_SECRET, sync: false }
+      - { key: SCALEKIT_DEFAULT_CONNECTIONS, value: gmail,googledrive }
       - key: ACTIAN_URL
         fromService: { type: pserv, name: caveat-actian, property: hostport }
       - key: REDIS_URL

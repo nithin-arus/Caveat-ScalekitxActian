@@ -163,8 +163,10 @@ services:
   - type: pserv              # private service — Actian, not publicly exposed
     name: caveat-actian
     runtime: image
-    image: { url: "ACTIAN_IMAGE_TODO" }   # confirm at event
-    disk: { name: actian-data, mountPath: /var/lib/actian, sizeGB: 1 }
+    image: { url: "actian/vectorai:latest" }
+    disk: { name: actian-data, mountPath: /var/lib/actian-vectorai, sizeGB: 1 }
+    envVars:
+      - { key: ACTIAN_VECTORAI_ACCEPT_EULA, value: "YES" }
 
   - type: cron
     name: caveat-watch

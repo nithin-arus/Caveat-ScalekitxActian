@@ -3,7 +3,7 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import type { AuditEntry as ServerAuditEntry, SessionIdentity } from "@shared/contracts";
 
-export type Role = "paralegal" | "attorney";
+export type Role = "paralegal" | "attorney" | "supervisor";
 export type Level = "high" | "med" | "low";
 
 export interface Clause {
@@ -115,6 +115,19 @@ interface PersonaInfo {
 }
 
 export const PERSONAS: Record<Role, PersonaInfo> = {
+  supervisor: {
+    name: "Priya Shah",
+    sub: "Supervisor · Radar",
+    initials: "PS",
+    dot: "#7A1F2B",
+    ring: "rgba(122,31,43,0.16)",
+    bg: "#F1E2E4",
+    border: "#DFC2C7",
+    text: "#5B1722",
+    subColor: "#8A5961",
+    avatarBg: "#E8CCD1",
+    avatarColor: "#7A1F2B",
+  },
   attorney: {
     name: "Marcus Vela",
     sub: "Attorney · Approver",
@@ -149,6 +162,7 @@ const TENANT_IDS: Record<string, string> = {
 };
 
 function roleFromSession(session: SessionIdentity): Role {
+  if (session.permissions.includes("view:radar")) return "supervisor";
   return session.permissions.includes("act:redline") ? "attorney" : "paralegal";
 }
 
@@ -192,6 +206,7 @@ interface CaseState {
   closeSso: () => void;
   pickParalegal: () => void;
   pickAttorney: () => void;
+  pickSupervisor: () => void;
   routeToAttorney: () => Promise<void>;
   approveAndSend: () => Promise<void>;
   resetCase: () => void;
@@ -290,7 +305,7 @@ export function CaseProvider({ children }: { children: ReactNode }) {
   }, [routed, sent, sentAuditId, sentHash, serverAuditEntries]);
 
   function signInAs(nextRole: Role, nextTenant = tenant) {
-    const roleKey = nextRole === "attorney" ? "approver" : "reviewer";
+    const roleKey = nextRole === "supervisor" ? "admin" : nextRole === "attorney" ? "approver" : "reviewer";
     const tenantId = TENANT_IDS[nextTenant] ?? "sf-tu";
     window.location.href = `/api/auth/login?role=${roleKey}&tenant=${tenantId}`;
   }
@@ -316,6 +331,7 @@ export function CaseProvider({ children }: { children: ReactNode }) {
     closeSso: () => setShowSso(false),
     pickParalegal: () => signInAs("paralegal"),
     pickAttorney: () => signInAs("attorney"),
+    pickSupervisor: () => signInAs("supervisor"),
     routeToAttorney: async () => {
       setActionError(null);
       const response = await fetch("/api/cases/lease-gotcha/route", { method: "POST" });

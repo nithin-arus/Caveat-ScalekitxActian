@@ -18,11 +18,18 @@ cp infra/.env.example infra/.env
 docker compose --env-file infra/.env -f infra/docker-compose.yml up caveat-redis
 ```
 
-The Actian service is behind a compose profile because the exact image is still a day-of confirmation item:
+The Actian VectorAI DB service is behind a compose profile so local mock demos can run without Docker startup cost:
 
 ```sh
 docker compose --env-file infra/.env -f infra/docker-compose.yml --profile actian up caveat-actian
 ```
+
+Local Actian defaults match the hackathon guide:
+
+- Image: `actian/vectorai:latest`
+- Client address: `localhost:6574`
+- Required env: `ACTIAN_VECTORAI_ACCEPT_EULA=YES`
+- Persistent data path: `/var/lib/actian-vectorai`
 
 ## Data Seed
 
@@ -47,13 +54,12 @@ The cron watcher writes jobs to `data/generated/watch_jobs.jsonl`. The worker co
 
 ## Day-Of Swap Checklist
 
-1. Replace `ACTIAN_IMAGE_TODO` with the confirmed Actian image.
-2. Fill Scalekit env vars.
-3. Fill Anthropic env vars.
-4. Confirm `ACTIAN_URL` and `REDIS_URL` resolve inside Render private networking.
-5. Run the seed job against Actian.
-6. Trigger `caveat-watch` manually once before the live demo.
-7. Run `caveat-agent` once and confirm completed jobs appear in the worker results or Redis-backed job store.
+1. Fill Scalekit env vars.
+2. Fill Anthropic env vars.
+3. Confirm `ACTIAN_URL` and `REDIS_URL` resolve inside Render private networking.
+4. Run the seed job against Actian.
+5. Trigger `caveat-watch` manually once before the live demo.
+6. Run `caveat-agent` once and confirm completed jobs appear in the worker results or Redis-backed job store.
 
 ## Notes
 
