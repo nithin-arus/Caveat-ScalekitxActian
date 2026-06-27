@@ -18,7 +18,7 @@ export function scalekitEnvUrl() {
 
 export function appConfigForSession(session?: SessionIdentity) {
   return {
-    appUrl: env("CAVEAT_APP_URL", "http://localhost:3000"),
+    appUrl: env("CAVEAT_APP_URL", "https://caveat-scalekitxactian-yt9v.onrender.com"),
     authMode: env("MOCK_AUTH", "1") === "0" ? "scalekit" : "mock",
     scalekit: {
       envUrl: scalekitEnvUrl(),

@@ -29,7 +29,7 @@ function getAgentKitClient(): ScalekitClient {
 function appUrl(): string {
   // RENDER_EXTERNAL_URL is auto-injected by Render on the public web service —
   // prefer it so the OAuth callback never points at a dead/local URL once deployed.
-  return process.env.RENDER_EXTERNAL_URL || process.env.CAVEAT_APP_URL || "http://localhost:3000";
+  return process.env.RENDER_EXTERNAL_URL || process.env.CAVEAT_APP_URL || "https://caveat-scalekitxactian-yt9v.onrender.com";
 }
 
 function base64UrlEncode(input: string): string {

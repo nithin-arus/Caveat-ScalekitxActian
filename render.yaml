@@ -18,8 +18,7 @@ services:
       - { key: SCALEKIT_DEFAULT_CONNECTIONS, value: gmail,googledrive }
       - { key: SCALEKIT_READ_ONLY_SCOPE, value: openid,profile,email,read }
       - { key: SCALEKIT_ACT_SCOPE, value: openid,profile,email,read,send }
-      # No CAVEAT_APP_URL needed — Render auto-injects RENDER_EXTERNAL_URL on web
-      # services, which scalekitAgent.ts prefers for the Gmail OAuth callback.
+      - { key: CAVEAT_APP_URL, value: "https://caveat-scalekitxactian-yt9v.onrender.com" }
       # Whoever is running the live demo — their own email, so the Gmail
       # connection on Scalekit's side is theirs, not a shared/clobbered one.
       - { key: CAVEAT_DEMO_USER_ID, sync: false }
