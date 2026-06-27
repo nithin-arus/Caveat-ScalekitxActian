@@ -7,7 +7,9 @@ services:
     startCommand: npm start
     envVars:
       - { key: NODE_ENV, value: production }
-      - { key: CAVEAT_DATA_DIR, value: /opt/render/project/src/data }
+      - { key: CAVEAT_DATA_DIR, value: ../data }
+      - { key: CAVEAT_QUEUE_FILE, value: ../data/generated/watch_jobs.jsonl }
+      - { key: CAVEAT_RESULTS_FILE, value: ../data/generated/worker_results.json }
       - { key: SCALEKIT_ENV_URL, sync: false }
       - { key: SCALEKIT_CLIENT_ID, sync: false }
       - { key: SCALEKIT_CLIENT_SECRET, sync: false }
@@ -25,7 +27,9 @@ services:
     startCommand: npm run worker
     envVars:
       - { key: NODE_ENV, value: production }
-      - { key: CAVEAT_DATA_DIR, value: /opt/render/project/src/data }
+      - { key: CAVEAT_DATA_DIR, value: ../data }
+      - { key: CAVEAT_QUEUE_FILE, value: ../data/generated/watch_jobs.jsonl }
+      - { key: CAVEAT_RESULTS_FILE, value: ../data/generated/worker_results.json }
       - { key: SCALEKIT_ENV_URL, sync: false }
       - { key: SCALEKIT_CLIENT_ID, sync: false }
       - { key: SCALEKIT_CLIENT_SECRET, sync: false }
@@ -54,7 +58,9 @@ services:
     startCommand: npm run watch
     envVars:
       - { key: NODE_ENV, value: production }
-      - { key: CAVEAT_DATA_DIR, value: /opt/render/project/src/data }
+      - { key: CAVEAT_DATA_DIR, value: ../data }
+      - { key: CAVEAT_QUEUE_FILE, value: ../data/generated/watch_jobs.jsonl }
+      - { key: CAVEAT_RESULTS_FILE, value: ../data/generated/worker_results.json }
       - { key: WATCH_DRY_RUN, value: "false" }
       - { key: SCALEKIT_ENV_URL, sync: false }
       - { key: SCALEKIT_CLIENT_ID, sync: false }

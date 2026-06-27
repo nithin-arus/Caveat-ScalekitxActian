@@ -20,8 +20,8 @@
   --color-paper-muted: var(--color-paper-muted);
   --color-ink: var(--color-ink);
   --color-ink-muted: var(--color-ink-muted);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: Arial, Helvetica, sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
 }
 
 body {
