@@ -7,7 +7,7 @@ import { useCase } from "@/lib/caseStore";
 const TENANTS = ["SF Tenants Union", "Oakland Legal Aid"];
 
 export function TopBar() {
-  const { tenant, setTenant, persona, openSso } = useCase();
+  const { tenant, setTenant, persona, openSso, role } = useCase();
   const pathname = usePathname();
 
   const navStyle = (active: boolean): React.CSSProperties => ({
@@ -55,7 +55,7 @@ export function TopBar() {
                 color: "#17150F",
               }}
             >
-              Fineprint
+              Caveat
             </span>
             <span
               style={{
@@ -103,6 +103,16 @@ export function TopBar() {
             <Link href="/audit" style={navStyle(pathname === "/audit")}>
               Audit Log
             </Link>
+            {role === "attorney" && (
+              <Link href="/approvals" style={navStyle(pathname === "/approvals")}>
+                Approvals
+              </Link>
+            )}
+            {role === "attorney" && (
+              <Link href="/radar" style={navStyle(pathname === "/radar")}>
+                Radar
+              </Link>
+            )}
           </div>
           <div style={{ height: 22, width: 1, background: "#DCD7CB" }} />
           <button

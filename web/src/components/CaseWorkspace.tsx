@@ -30,7 +30,6 @@ function HeatStrip({ values }: { values: number[] }) {
 export function CaseWorkspace() {
   const {
     role,
-    persona,
     clauses,
     selectedClauseId,
     setSelectedClauseId,
@@ -40,6 +39,7 @@ export function CaseWorkspace() {
     sent,
     sentAuditId,
     sentHash,
+    actionError,
     routeToAttorney,
     approveAndSend,
     resetCase,
@@ -647,6 +647,11 @@ export function CaseWorkspace() {
                         Route to Lead Attorney for Approval →
                       </button>
                     )}
+                    {actionError && (
+                      <div style={{ fontSize: 12.5, color: "#8E2D20", lineHeight: 1.4 }}>
+                        Server blocked action: {actionError}
+                      </div>
+                    )}
                   </div>
                 )}
 
@@ -699,6 +704,11 @@ export function CaseWorkspace() {
                     >
                       Approve &amp; Send Cease-and-Desist
                     </button>
+                    {actionError && (
+                      <div style={{ fontSize: 12.5, color: "#8E2D20", lineHeight: 1.4 }}>
+                        Server blocked action: {actionError}
+                      </div>
+                    )}
                     <div
                       style={{
                         fontFamily: "'IBM Plex Mono',monospace",

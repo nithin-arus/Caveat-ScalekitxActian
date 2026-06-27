@@ -25,21 +25,28 @@ export interface Flag {
 
 export interface Analysis {
   id: string;
+  tenantId?: string;
   title: string;
   summary: string;
   riskScore: number; // 0-100
   flags: Flag[];
   createdAt: string;
-  tenantId?: string; // owning org in the B2B/multi-tenant deployment, e.g. "sf-tenants-union"
+  status?: "new" | "reviewed" | "awaiting_approval" | "sent";
+  routedBy?: string;
+  routedAt?: string;
 }
 
 export interface AuditEntry {
   auditId: string;
-  action: "sendRedline" | "fetchContract" | "revokeAccess";
+  tenantId?: string;
+  action: "sendRedline" | "fetchContract" | "routeToAttorney" | "analyze" | "revokeAccess";
   actor: string; // the real human, attributed
+  actorRole?: string;
   detail: string;
   timestamp: string;
   ok: boolean;
+  signature?: string;
+  verified?: boolean;
 }
 
 export interface WatchEvent {
@@ -90,4 +97,27 @@ export interface Actor {
     body: string;
   }): Promise<{ ok: boolean; auditId: string }>;
   scope: "read_only" | "act";
+}
+
+export type Permission = "read:cases" | "route:redline" | "act:redline" | "view:radar";
+
+export interface Tenant {
+  id: string;
+  oid: string;
+  name: string;
+  brand: string;
+  idpDomain: string;
+  accent: string;
+}
+
+export interface SessionIdentity {
+  sub: string;
+  oid: string;
+  tenantId: string;
+  name: string;
+  email: string;
+  roles: string[];
+  permissions: Permission[];
+  tenant: Tenant;
+  mode: "mock" | "scalekit";
 }

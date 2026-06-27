@@ -1,6 +1,7 @@
 "use client";
 
-import { createContext, useContext, useMemo, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import type { AuditEntry as ServerAuditEntry, SessionIdentity } from "@shared/contracts";
 
 export type Role = "paralegal" | "attorney";
 export type Level = "high" | "med" | "low";
@@ -113,7 +114,7 @@ interface PersonaInfo {
   avatarColor: string;
 }
 
-const PERSONAS: Record<Role, PersonaInfo> = {
+export const PERSONAS: Record<Role, PersonaInfo> = {
   attorney: {
     name: "Marcus Vela",
     sub: "Attorney · Approver",
@@ -142,17 +143,32 @@ const PERSONAS: Record<Role, PersonaInfo> = {
   },
 };
 
-function genId() {
-  return "AUD-" + Math.random().toString(16).slice(2, 8).toUpperCase();
+const TENANT_IDS: Record<string, string> = {
+  "SF Tenants Union": "sf-tu",
+  "Oakland Legal Aid": "oak-legal",
+};
+
+function roleFromSession(session: SessionIdentity): Role {
+  return session.permissions.includes("act:redline") ? "attorney" : "paralegal";
 }
 
-function genHash() {
-  return (
-    "0x" +
-    Array.from({ length: 5 }, () => Math.random().toString(16).slice(2, 6))
-      .join("")
-      .slice(0, 38)
-  );
+function auditFromServer(entry: ServerAuditEntry): AuditEntry {
+  const date = new Date(entry.timestamp);
+  const isApprover = entry.actorRole?.includes("approver") || entry.actorRole?.includes("attorney");
+
+  return {
+    date: date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
+    time: date.toLocaleTimeString("en-US", { hour12: false }),
+    dot: entry.ok ? (isApprover ? "#5E7257" : "#B07D2A") : "#B23B2A",
+    actor: entry.actor,
+    actorRole: entry.actorRole ?? "System",
+    roleColor: isApprover ? "#46603F" : "#9A8A5E",
+    roleBg: isApprover ? "#E4E7DC" : "#F1E7D3",
+    action: entry.action === "routeToAttorney" ? "Routed for attorney approval" : "Approved & sent — cease-and-desist",
+    detail: entry.detail,
+    id: entry.auditId,
+    hash: entry.signature ?? "unsigned",
+  };
 }
 
 interface CaseState {
@@ -163,6 +179,7 @@ interface CaseState {
   sent: boolean;
   sentAuditId: string | null;
   sentHash: string | null;
+  actionError: string | null;
   showSso: boolean;
   clauses: Clause[];
   citywideMatches: number;
@@ -175,8 +192,8 @@ interface CaseState {
   closeSso: () => void;
   pickParalegal: () => void;
   pickAttorney: () => void;
-  routeToAttorney: () => void;
-  approveAndSend: () => void;
+  routeToAttorney: () => Promise<void>;
+  approveAndSend: () => Promise<void>;
   resetCase: () => void;
 }
 
@@ -190,7 +207,20 @@ export function CaseProvider({ children }: { children: ReactNode }) {
   const [sent, setSent] = useState(false);
   const [sentAuditId, setSentAuditId] = useState<string | null>(null);
   const [sentHash, setSentHash] = useState<string | null>(null);
+  const [actionError, setActionError] = useState<string | null>(null);
+  const [serverAuditEntries, setServerAuditEntries] = useState<AuditEntry[]>([]);
   const [showSso, setShowSso] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/me")
+      .then((response) => response.json())
+      .then((payload: { session?: SessionIdentity }) => {
+        if (!payload.session) return;
+        setRole(roleFromSession(payload.session));
+        setTenant(payload.session.tenant.name);
+      })
+      .catch(() => undefined);
+  }, []);
 
   const auditEntries = useMemo<AuditEntry[]>(() => {
     const entries: AuditEntry[] = [
@@ -238,7 +268,9 @@ export function CaseProvider({ children }: { children: ReactNode }) {
         hash: "0x77a0c4e9b21d8f4630",
       });
     }
-    if (sent && sentAuditId && sentHash) {
+    if (serverAuditEntries.length) {
+      entries.push(...serverAuditEntries);
+    } else if (sent && sentAuditId && sentHash) {
       entries.push({
         date: "Jun 27 2026",
         time: "09:24:58",
@@ -255,7 +287,13 @@ export function CaseProvider({ children }: { children: ReactNode }) {
       });
     }
     return entries;
-  }, [routed, sent, sentAuditId, sentHash]);
+  }, [routed, sent, sentAuditId, sentHash, serverAuditEntries]);
+
+  function signInAs(nextRole: Role, nextTenant = tenant) {
+    const roleKey = nextRole === "attorney" ? "approver" : "reviewer";
+    const tenantId = TENANT_IDS[nextTenant] ?? "sf-tu";
+    window.location.href = `/api/auth/login?role=${roleKey}&tenant=${tenantId}`;
+  }
 
   const value: CaseState = {
     role,
@@ -265,6 +303,7 @@ export function CaseProvider({ children }: { children: ReactNode }) {
     sent,
     sentAuditId,
     sentHash,
+    actionError,
     showSso,
     clauses: CLAUSES,
     citywideMatches: CITYWIDE_MATCHES,
@@ -272,29 +311,52 @@ export function CaseProvider({ children }: { children: ReactNode }) {
     persona: PERSONAS[role],
     auditEntries,
     setSelectedClauseId,
-    setTenant,
+    setTenant: (nextTenant) => signInAs(role, nextTenant),
     openSso: () => setShowSso(true),
     closeSso: () => setShowSso(false),
-    pickParalegal: () => {
-      setRole("paralegal");
-      setShowSso(false);
+    pickParalegal: () => signInAs("paralegal"),
+    pickAttorney: () => signInAs("attorney"),
+    routeToAttorney: async () => {
+      setActionError(null);
+      const response = await fetch("/api/cases/lease-gotcha/route", { method: "POST" });
+      const payload = (await response.json()) as { error?: string; audit?: ServerAuditEntry };
+
+      if (!response.ok) {
+        setActionError(payload.error ?? "Route blocked by server policy.");
+        return;
+      }
+
+      setRouted(true);
+      if (payload.audit) {
+        const auditEntry = auditFromServer(payload.audit);
+        setServerAuditEntries((entries) => [...entries, auditEntry]);
+      }
     },
-    pickAttorney: () => {
-      setRole("attorney");
-      setShowSso(false);
-    },
-    routeToAttorney: () => setRouted(true),
-    approveAndSend: () => {
-      if (role !== "attorney") return;
+    approveAndSend: async () => {
+      setActionError(null);
+      const response = await fetch("/api/cases/lease-gotcha/send", { method: "POST" });
+      const payload = (await response.json()) as { error?: string; audit?: ServerAuditEntry };
+
+      if (!response.ok) {
+        setActionError(payload.error ?? "Send blocked by server policy.");
+        return;
+      }
+
       setSent(true);
-      setSentAuditId(genId());
-      setSentHash(genHash());
+      if (payload.audit) {
+        setSentAuditId(payload.audit.auditId);
+        setSentHash(payload.audit.signature ?? null);
+        const auditEntry = auditFromServer(payload.audit);
+        setServerAuditEntries((entries) => [...entries, auditEntry]);
+      }
     },
     resetCase: () => {
       setSent(false);
       setRouted(false);
       setSentAuditId(null);
       setSentHash(null);
+      setActionError(null);
+      setServerAuditEntries([]);
     },
   };
 

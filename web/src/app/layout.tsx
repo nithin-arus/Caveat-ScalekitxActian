@@ -18,9 +18,9 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Fineprint — systemic AI defense for tenants",
+  title: "Caveat — systemic AI defense for tenants",
   description:
-    "Fineprint is the B2B platform Legal Aid organizations and tenant unions use to catch predatory lease clauses at scale, with role-gated approval and a verifiable audit trail.",
+    "Caveat is the B2B platform Legal Aid organizations and tenant unions use to catch predatory lease clauses at scale, with role-gated approval and a verifiable audit trail.",
 };
 
 export default function RootLayout({

@@ -182,7 +182,7 @@ export const sampleAnalyses: Analysis[] = [
           text: "Landlord may enter the premises with at least 24 hours' notice during reasonable hours for inspections, repairs, or showings, except in emergencies or as otherwise allowed by law.",
         },
         reason:
-          "This preserves reasonable notice and emergency access. It is the kind of clause Fineprint should mark as acceptable rather than over-warning.",
+          "This preserves reasonable notice and emergency access. It is the kind of clause Caveat should mark as acceptable rather than over-warning.",
         severity: "low",
         suggestedRedline: "No redline needed. Keep as written.",
       },
